@@ -95,28 +95,6 @@ namespace WP8GameTest.Sprites
           default:
             break;
         }
-
-        //if (aCurrentKeyboardState.IsKeyDown(Keys.Left) == true)
-        //{
-        //  mSpeed.X = WIZARD_SPEED;
-        //  mDirection.X = MOVE_LEFT;
-        //}
-        //else if (aCurrentKeyboardState.IsKeyDown(Keys.Right) == true)
-        //{
-        //  mSpeed.X = WIZARD_SPEED;
-        //  mDirection.X = MOVE_RIGHT;
-        //}
-
-        //if (aCurrentKeyboardState.IsKeyDown(Keys.Up) == true)
-        //{
-        //  mSpeed.Y = WIZARD_SPEED;
-        //  mDirection.Y = MOVE_UP;
-        //}
-        //else if (aCurrentKeyboardState.IsKeyDown(Keys.Down) == true)
-        //{
-        //  mSpeed.Y = WIZARD_SPEED;
-        //  mDirection.Y = MOVE_DOWN;
-        //}
       }
     }
 

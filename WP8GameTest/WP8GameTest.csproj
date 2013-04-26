@@ -73,6 +73,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Entities\MoveDirection.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="HorizontallyScrollingBackground.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="GamePage.xaml.cs">

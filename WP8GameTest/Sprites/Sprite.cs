@@ -61,5 +61,20 @@ namespace WP8GameTest
           Color.White, 0.0f, Vector2.Zero, Scale, SpriteEffects.None, 0);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="otherObject"></param>
+    /// <returns></returns>
+    public bool IsColliding(Vector2 otherObject)
+    {
+      var x = Position.X;
+      var y = Position.Y;
+      x -= Size.Width / 2;
+      y -= Size.Height / 2;
+      var currentAria = new Rectangle((int)x, (int)y, Size.Width, Size.Height);
+      return currentAria.Contains((int)otherObject.X, (int)otherObject.Y);
+    }
+
   }
 }

@@ -40,7 +40,7 @@ namespace WP8GameTest
     }
 
     //Load the texture for the sprite using the Content Pipeline
-    public void LoadContent(ContentManager theContentManager, string theAssetName)
+    public virtual void LoadContent(ContentManager theContentManager, string theAssetName)
     {
       SpriteTexture = theContentManager.Load<Texture2D>(theAssetName);
       AssetName = theAssetName;
@@ -68,11 +68,7 @@ namespace WP8GameTest
     /// <returns></returns>
     public bool IsColliding(Vector2 otherObject)
     {
-      var x = Position.X;
-      var y = Position.Y;
-      x -= Size.Width / 2;
-      y -= Size.Height / 2;
-      var currentAria = new Rectangle((int)x, (int)y, Size.Width, Size.Height);
+      var currentAria = new Rectangle((int)Position.X, (int)Position.Y, Size.Width, Size.Height);
       return currentAria.Contains((int)otherObject.X, (int)otherObject.Y);
     }
 

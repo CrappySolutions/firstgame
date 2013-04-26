@@ -24,6 +24,11 @@ namespace WP8GameTest
     //The Size of the Sprite (with scale applied)
     public Rectangle Size;
 
+    public Rectangle BoundingBox 
+    {
+      get { return new Rectangle((int)Position.X, (int)Position.Y, SpriteTexture.Width, SpriteTexture.Height); } 
+    }
+
     //The amount to increase/decrease the size of the original sprite. When
     //modified throught he property, the Size of the sprite is recalculated
     //with the new scale applied.
@@ -38,6 +43,8 @@ namespace WP8GameTest
         Size = new Rectangle(0, 0, (int)(SpriteTexture.Width * Scale), (int)(SpriteTexture.Height * Scale));
       }
     }
+
+    
 
     //Load the texture for the sprite using the Content Pipeline
     public virtual void LoadContent(ContentManager theContentManager, string theAssetName)
@@ -66,10 +73,9 @@ namespace WP8GameTest
     /// </summary>
     /// <param name="otherObject"></param>
     /// <returns></returns>
-    public bool IsColliding(Vector2 otherObject)
+    public bool IsColliding(Sprite otherObject)
     {
-      var currentAria = new Rectangle((int)Position.X, (int)Position.Y, Size.Width, Size.Height);
-      return currentAria.Contains((int)otherObject.X, (int)otherObject.Y);
+      return this.BoundingBox.Intersects(otherObject.BoundingBox);
     }
 
   }

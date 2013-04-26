@@ -25,22 +25,52 @@ namespace WP8GameTest.Sprites
     private int currentFrame;
     private int totalFrames;
 
+    List<Fireball> _fireballs;
+    ContentManager mContentManager;
+
     enum State
     {
       Walking
     }
+    
     State mCurrentState = State.Walking;
     Vector2 mDirection = Vector2.Zero;
     Vector2 mSpeed = Vector2.Zero;
 
+
+
     public void LoadContent(ContentManager theContentManager, string assetname, int rows, int columns, Vector2 startPosition)
     {
+      _fireballs = new List<Fireball>();
+      mContentManager = theContentManager;
       Rows = rows;
       Columns = columns;
       currentFrame = 0;
       totalFrames = Rows * Columns;
       Position = startPosition;
+
+      foreach (Fireball aFireball in _fireballs)
+      {
+        aFireball.LoadContent(theContentManager);
+      }
+
+      Position = startPosition;
+      Source = new Rectangle(0, 0, 200, Size.Height);
+
       base.LoadContent(theContentManager, assetname);
+    }
+
+    //The Rectangular area from the original image that 
+    //defines the Sprite. 
+    Rectangle mSource;
+    public Rectangle Source
+    {
+      get { return mSource; }
+      set
+      {
+        mSource = value;
+        Size = new Rectangle(0, 0, (int)(mSource.Width * Scale), (int)(mSource.Height * Scale));
+      }
     }
 
     public void Update(GameTime theGameTime, MoveDirection moveDirection)
@@ -58,6 +88,7 @@ namespace WP8GameTest.Sprites
         }
       }
 
+      UpdateFireball(theGameTime, moveDirection);
       UpdateMovement(moveDirection);
 
       base.Update(theGameTime, mSpeed, mDirection);
@@ -143,6 +174,46 @@ namespace WP8GameTest.Sprites
           return MoveDirection.Stop;
       }
       return playerMoveDirection;
+    }
+
+    private void UpdateFireball(GameTime theGameTime, MoveDirection moveDirection)
+    {
+      foreach (Fireball aFireball in _fireballs)
+      {
+        aFireball.Update(theGameTime);
+      }
+
+      if (moveDirection == MoveDirection.Right)
+      {
+        ShootFireball();
+      }
+    }
+
+    private void ShootFireball()
+    {
+      if (mCurrentState == State.Walking)
+      {
+        bool aCreateNew = true;
+        foreach (Fireball aFireball in _fireballs)
+        {
+          if (aFireball.Visible == false)
+          {
+            aCreateNew = false;
+            aFireball.Fire(Position + new Vector2(Size.Width / 2, Size.Height / 2),
+                new Vector2(200, 0), new Vector2(1, 0));
+            break;
+          }
+        }
+
+        if (aCreateNew == true)
+        {
+          Fireball aFireball = new Fireball();
+          aFireball.LoadContent(mContentManager);
+          aFireball.Fire(Position + new Vector2(Size.Width / 2, Size.Height / 2),
+              new Vector2(200, 200), new Vector2(1, 0));
+          _fireballs.Add(aFireball);
+        }
+      }
     }
 
   }

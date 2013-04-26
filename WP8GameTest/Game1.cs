@@ -12,7 +12,6 @@ using System.Windows;
 
 namespace WP8GameTest
 {
-
   public class Game1 : Microsoft.Xna.Framework.Game
   {
     #region Private

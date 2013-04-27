@@ -1,3 +1,4 @@
+using CS.KTS.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
@@ -13,6 +14,9 @@ namespace CS.KTS
         SpriteBatch _spriteBatch;
         CS.KTS.Sprites.InputControlSprite _controls;
         private RenderTarget2D _renderTarget;
+    private bool firstUpdate = true;
+    private Sprite background;
+
         public BoardOne()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -38,6 +42,16 @@ namespace CS.KTS
         /// </summary>
         protected override void LoadContent()
         {
+      if (firstUpdate)
+      {
+        // Temp hack to fix gestures
+        typeof(Microsoft.Xna.Framework.Input.Touch.TouchPanel)
+            .GetField("_touchScale", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)
+            .SetValue(null, Vector2.One);
+
+        firstUpdate = false;
+      }
+
             // Create a new SpriteBatch, which can be used to draw textures.
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _controls = new Sprites.InputControlSprite(Content, _graphics);
@@ -71,17 +85,21 @@ namespace CS.KTS
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
+
           GraphicsDevice.SetRenderTarget(_renderTarget);   
           GraphicsDevice.Clear(Color.White);
           _spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
           _controls.Draw(_spriteBatch);
           _spriteBatch.End();
           base.Draw(gameTime);
+
           GraphicsDevice.SetRenderTarget(null); 
           _spriteBatch.Begin();
+
+      //1280 x 720, 385 280, 400 240
           DrawLandscape(385, 200);
+
           _spriteBatch.End();
-          // TODO: Add your drawing code here
         }
 
 

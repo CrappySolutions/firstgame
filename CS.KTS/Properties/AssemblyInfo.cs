@@ -1,15 +1,16 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Resources;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CS.KTS.Data")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("CS.KTS")]
+[assembly: AssemblyProduct("CS.KTS")]
 [assembly: AssemblyConfiguration("")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("CS.KTS.Data")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +21,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("1fab7cfe-b643-454a-b2b5-3ae02c2e59f8")]
+[assembly: Guid("f6b000f1-a26e-47e4-bd93-93910c4866b7")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -34,3 +35,4 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: NeutralResourcesLanguageAttribute("en-US")]

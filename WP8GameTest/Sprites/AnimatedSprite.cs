@@ -47,5 +47,7 @@ namespace WP8GameTest.Sprites
       spriteBatch.Draw(Texture, destinationRectangle, sourceRectangle, Color.White);
       spriteBatch.End();
     }
+
+
   }
 }

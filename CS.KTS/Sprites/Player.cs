@@ -1,0 +1,79 @@
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace CS.KTS.Sprites
+{
+  public class Player : AnimatedSprite
+  {
+    private List<Projectile> _projectiles = new List<Projectile>();
+    private string _projectileAssetName;
+    private Microsoft.Xna.Framework.Content.ContentManager _contentManager;
+    public bool SendProjectile { get; set; }
+
+    public Player(Texture2D texture, int rows, int columns, Vector2 startPoint, string projectileAssetName)
+      : base(texture, rows, columns)
+    {
+      Position = startPoint;
+      _projectileAssetName = projectileAssetName;
+    }
+
+    public override void LoadContent(Microsoft.Xna.Framework.Content.ContentManager theContentManager, string theAssetName)
+    {
+      _contentManager = theContentManager;
+      base.LoadContent(theContentManager, theAssetName);
+      _currentFrameIndex = 0;
+      _totalFrameCount = Rows * Columns;
+      foreach (var projectile in _projectiles)
+      {
+        projectile.LoadContent(theContentManager, _projectileAssetName);
+      }
+    }
+
+    public override void Update(GameTime theGameTime, Movement movement)
+    {
+      base.Update(theGameTime, movement);
+      foreach (var projectile in _projectiles)
+      {
+        projectile.Update(theGameTime, movement);
+      }
+      if (SendProjectile)
+      {
+        var firePosition = new Vector2(Position.X + 50, Position.Y + 25);
+        var createProjectile = true;
+        foreach (var projectile in _projectiles)
+        {
+          if (!projectile.DoRemove)
+          {
+            createProjectile = false;
+            projectile.Fire(firePosition, new Vector2(200, 0), new Vector2(1, 0));
+          }
+        }
+        if (createProjectile)
+        {
+          var projectile = new Projectile(_contentManager.Load<Texture2D>(_projectileAssetName), 0, 0);
+          //_contentManager
+          projectile.Fire(firePosition, new Vector2(200, 0), new Vector2(1, 0));
+          _projectiles.Add(projectile);
+        }
+        SendProjectile = false;
+      }
+    }
+
+    public override void Draw(SpriteBatch spriteBatch) 
+    {
+      base.Draw(spriteBatch);
+      spriteBatch.Begin();
+      spriteBatch.Begin();
+      foreach (var proj in _projectiles)
+      {
+        proj.Draw(spriteBatch);
+      }
+      spriteBatch.End();
+    }
+  }
+}

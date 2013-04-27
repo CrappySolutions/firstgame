@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace CS.KTS
 {
@@ -27,7 +28,7 @@ namespace CS.KTS
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            TouchPanel.EnabledGestures = GestureType.FreeDrag | GestureType.Tap | GestureType.Hold; 
             base.Initialize();
         }
 
@@ -40,8 +41,7 @@ namespace CS.KTS
             // Create a new SpriteBatch, which can be used to draw textures.
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _controls = new Sprites.InputControlSprite(Content, _graphics);
-            _renderTarget = new RenderTarget2D(_graphics.GraphicsDevice, _graphics.GraphicsDevice.Viewport.Width, _graphics.GraphicsDevice.Viewport.Height, false, SurfaceFormat.Color, DepthFormat.Depth16);
-            // TODO: use this.Content to load your game content here
+            _renderTarget = new RenderTarget2D(_graphics.GraphicsDevice, _graphics.GraphicsDevice.Viewport.Height, _graphics.GraphicsDevice.Viewport.Width, false, SurfaceFormat.Color, DepthFormat.Depth16);
         }
 
         /// <summary>
@@ -73,11 +73,12 @@ namespace CS.KTS
         {
           GraphicsDevice.SetRenderTarget(_renderTarget);   
           GraphicsDevice.Clear(Color.White);
-          
+          _spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
+          _controls.Draw(_spriteBatch);
+          _spriteBatch.End();
           base.Draw(gameTime);
           GraphicsDevice.SetRenderTarget(null); 
           _spriteBatch.Begin();
-       //   _controls.Draw(_spriteBatch);
           DrawLandscape(385, 200);
           _spriteBatch.End();
           // TODO: Add your drawing code here

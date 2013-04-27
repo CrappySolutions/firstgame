@@ -72,6 +72,13 @@ namespace CS.KTS.Sprites
 
     protected int _totalFrameCount;
 
+    public AnimatedSprite(string assetName, int rows, int columns) 
+    {
+      AssetName = assetName;
+      Rows = rows;
+      Columns = columns;
+    } 
+
     public AnimatedSprite(Texture2D texture, int rows, int columns)
       : base() 
     {

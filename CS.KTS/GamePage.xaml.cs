@@ -48,7 +48,7 @@ namespace CS.KTS
               Dispatcher.BeginInvoke(() =>
               {
                 Test.Text = a;
-                //NavigationService.Navigate(new Uri("/Xaml/CompletedVIew.xaml", UriKind.Relative));
+                NavigationService.Navigate(new Uri("/Xaml/CompletedVIew.xaml", UriKind.Relative));
               });
             };
         }

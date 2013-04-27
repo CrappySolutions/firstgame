@@ -147,9 +147,9 @@ namespace CS.KTS
       {
         foreach (var walker in _walkers)
         {
-          if (walker.IsColliding(projectile))
+          if (walker.IsColliding(projectile) && !walker.IsDead)
           {
-            walker.DoRemove = true;
+            
             walker.SetDead();
             var xPos = walker.Position.X + (walker.Size.Width / 2) - 45;
             projectile.SetHit();

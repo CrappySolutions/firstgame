@@ -37,9 +37,9 @@ namespace CS.KTS.Sprites
     public void Update(GameTime theGameTime)
     {
       if (CurrentMovement.Direction == MoveDirection.Left)
-        _currentFrameIndex = 0;
-      else if (CurrentMovement.Direction == MoveDirection.Right)
         _currentFrameIndex = 1;
+      else if (CurrentMovement.Direction == MoveDirection.Right)
+        _currentFrameIndex = 0;
 
       UpdateMovement(CurrentMovement);
       base.Update(theGameTime, mSpeed, mDirection);

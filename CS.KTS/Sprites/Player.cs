@@ -10,7 +10,7 @@ namespace CS.KTS.Sprites
 {
   public class Player : AnimatedSprite
   {
-    private List<Projectile> _projectiles = new List<Projectile>();
+    public List<Projectile> Projectiles = new List<Projectile>();
     private string _projectileAssetName;
     private Microsoft.Xna.Framework.Content.ContentManager _contentManager;
     public bool SendProjectile { get; set; }
@@ -28,7 +28,7 @@ namespace CS.KTS.Sprites
       base.LoadContent(theContentManager);
       _currentFrameIndex = 0;
       _totalFrameCount = Rows * Columns;
-      foreach (var projectile in _projectiles)
+      foreach (var projectile in Projectiles)
       {
         projectile.LoadContent(theContentManager, _projectileAssetName);
       }
@@ -48,13 +48,13 @@ namespace CS.KTS.Sprites
       if (SendProjectile)
       {
         SendProjectile = false;
-        var firePosition = new Vector2(Position.X + 80, Position.Y + 25);
-        var projectile = new Projectile(_contentManager.Load<Texture2D>(_projectileAssetName), 0, 0);
+        var firePosition = new Vector2(Position.X + 90, Position.Y + 25);
+        var projectile = new Projectile(_contentManager.Load<Texture2D>(_projectileAssetName), 1, 2);
         projectile.Fire(firePosition, new Vector2(500, 0), new Vector2(1, 0));
-        _projectiles.Add(projectile);
+        Projectiles.Add(projectile);
       }
       
-      foreach (var projectile in _projectiles)
+      foreach (var projectile in Projectiles)
       {
         projectile.Update(theGameTime, CurrentMovement);
       }
@@ -64,7 +64,7 @@ namespace CS.KTS.Sprites
     {
       base.Draw(spriteBatch);
       spriteBatch.Begin();
-      foreach (var proj in _projectiles)
+      foreach (var proj in Projectiles)
       {
         proj.Draw(spriteBatch);
       }

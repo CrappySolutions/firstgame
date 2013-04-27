@@ -21,16 +21,25 @@ namespace CS.KTS.Sprites
 
     public override void Update(Microsoft.Xna.Framework.GameTime theGameTime, Movement movement)
     {
-      DoRemove = (Vector2.Distance(StartPosition, Position) > MAX_DISTANCE);
+      if(!DoRemove)
+        DoRemove = (Vector2.Distance(StartPosition, Position) > MAX_DISTANCE);
       if (!DoRemove)
         Position += mDirection * mSpeed * (float)theGameTime.ElapsedGameTime.TotalSeconds;
     }
 
     public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
     {
-      spriteBatch.Draw(SpriteTexture, Position,
-      new Rectangle(0, 0, SpriteTexture.Width, SpriteTexture.Height),
-      Color.White, 0.0f, Vector2.Zero, Scale, SpriteEffects.None, 0);
+      int width = SpriteTexture.Width / Columns;
+      int height = SpriteTexture.Height / Rows;
+      int row = (int)((float)_currentFrameIndex / (float)Columns);
+      int column = _currentFrameIndex % Columns;
+
+      Rectangle sourceRectangle = new Rectangle(width * column, height * row, width, height);
+      Rectangle destinationRectangle = new Rectangle((int)Position.X, (int)Position.Y, width, height);
+
+      //spriteBatch.Begin();
+      spriteBatch.Draw(SpriteTexture, destinationRectangle, sourceRectangle, Color.White);
+      //spriteBatch.End();
     }
 
     public void Fire(Vector2 theStartPosition, Vector2 theSpeed, Vector2 theDirection)
@@ -41,12 +50,11 @@ namespace CS.KTS.Sprites
       mDirection = theDirection;
     }
 
-    protected override void UpdateMovement(Movement movement)
+
+    internal void SetHit()
     {
-      //base.UpdateMovement(movement);
-      mSpeed.X = movement.Direction == MoveDirection.Left ? -300 : 3000;
-      
-      
+      DoRemove = true;
+      _currentFrameIndex = 1;
     }
   }
 }

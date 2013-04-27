@@ -35,26 +35,29 @@ namespace CS.KTS.Sprites
 
     public void Update(GameTime gameTime)
     {
-      var movement = new Movement { Direction = _currentDirection, Type = MovementType.Walking };
-      if (_currentDirection == MoveDirection.Left)
+      if (mCurrentState == State.Walking)
       {
-        if (Position.X - _minX <= 20)
+        var movement = new Movement { Direction = _currentDirection, Type = MovementType.Walking };
+        if (_currentDirection == MoveDirection.Left)
         {
-          _currentFrameIndex = 0;
-          _currentDirection = MoveDirection.Right;
+          if (Position.X - _minX <= 20)
+          {
+            _currentFrameIndex = 0;
+            _currentDirection = MoveDirection.Right;
+          }
         }
-      }
-      else if (_currentDirection == MoveDirection.Right)
-      {
+        else if (_currentDirection == MoveDirection.Right)
+        {
 
-        if (_maxX - Position.X <= 20)
-        {
-          _currentFrameIndex = 1;
-          _currentDirection = MoveDirection.Left;
+          if (_maxX - Position.X <= 20)
+          {
+            _currentFrameIndex = 1;
+            _currentDirection = MoveDirection.Left;
+          }
         }
+        UpdateMovement(movement);
+        base.Update(gameTime, mSpeed, mDirection);
       }
-      UpdateMovement(movement);
-      base.Update(gameTime, mSpeed, mDirection);
     }
 
     protected override void UpdateMovement(Movement movement)
@@ -74,6 +77,11 @@ namespace CS.KTS.Sprites
     public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
     {
       base.Draw(spriteBatch);
+    }
+
+    internal void SetDead()
+    {
+      mCurrentState = State.Dead;
     }
   }
 }

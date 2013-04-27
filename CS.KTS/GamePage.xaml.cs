@@ -52,10 +52,10 @@ namespace CS.KTS
             //};
             //// Sample code to localize the ApplicationBar
             ////BuildLocalizedApplicationBar();
-        }
+                    }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
+              {
           base.OnNavigatedTo(e);
         }
         // Sample code for building a localized ApplicationBar

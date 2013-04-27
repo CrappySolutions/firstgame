@@ -103,6 +103,12 @@
     <Compile Include="Sprites\Player.cs" />
     <Compile Include="Sprites\Projectile.cs" />
     <Compile Include="Sprites\Sprite.cs" />
+    <Compile Include="Xaml\CompletedVIew.xaml.cs">
+      <DependentUpon>CompletedVIew.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Xaml\DeadView.xaml.cs">
+      <DependentUpon>DeadView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Xaml\Menu.xaml.cs">
       <DependentUpon>Menu.xaml</DependentUpon>
     </Compile>
@@ -113,6 +119,14 @@
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
     <Page Include="GamePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Xaml\CompletedVIew.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Xaml\DeadView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

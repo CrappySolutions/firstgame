@@ -14,12 +14,13 @@ namespace CS.KTS.Sprites
     private string _projectileAssetName;
     private Microsoft.Xna.Framework.Content.ContentManager _contentManager;
     public bool SendProjectile { get; set; }
-
+    public int HP { get; set; }
     public Player(string skinAsset, string weaponSkinAsset, int rows, int columns, Vector2 startPoint)
       : base(skinAsset, rows, columns)
     {
       Position = startPoint;
       _projectileAssetName = weaponSkinAsset;
+      HP = 100;
     }
 
     public override void LoadContent(Microsoft.Xna.Framework.Content.ContentManager theContentManager)

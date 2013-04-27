@@ -16,8 +16,10 @@ namespace CS.KTS
     private RenderTarget2D _renderTarget;
     private bool firstUpdate = true;
     private ScrollingBackgroundSprite _background;
-    public delegate void Test(string value);
-    public Test ConsoleWrite;
+    public delegate void WriteTextHandler(string value);
+    public WriteTextHandler ConsoleWrite;
+    public WriteTextHandler HPWriter;
+    public WriteTextHandler FinishedWriter;
     private string _pressedButton;
     private Player _player;
     private System.Collections.Generic.List<EnemyWalker> _walkers = new System.Collections.Generic.List<EnemyWalker>();
@@ -81,6 +83,7 @@ namespace CS.KTS
 
       _player = new Player("player", "bullit", 1, 2, new Vector2(500, 500));
       _player.LoadContent(Content);
+      HPWriter(_player.HP.ToString());
       AddWalkers(2);
     }
 
@@ -157,6 +160,15 @@ namespace CS.KTS
           }
         }
       }
+
+      foreach (var walker in _walkers)
+      {
+        if (_player.IsColliding(walker) && !walker.IsDead)
+        {
+          _player.HP -= 10;
+          HPWriter(_player.HP.ToString());
+        }
+      }
     }
 
     public void AddWalkers(int count)
@@ -181,12 +193,18 @@ namespace CS.KTS
       }
 
       var ws = _walkers.ToList();
+      bool removed = false;
       foreach (var walker in ws)
       {
         if (walker.DoRemove)
         {
+          removed = true;
           _walkers.Remove(walker);
         }
+      }
+      if (removed && _walkers.Count == 0)
+      {
+        FinishedWriter("Completed");
       }
     }
 

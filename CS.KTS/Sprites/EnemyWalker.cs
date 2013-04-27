@@ -15,13 +15,13 @@ namespace CS.KTS.Sprites
     private float _minX;
     private float _maxX;
     private MoveDirection _currentDirection;
-    public EnemyWalker(GraphicsDeviceManager aGraphicsManager, string skinAsset, int rows, int columns)
+    public EnemyWalker(GraphicsDeviceManager aGraphicsManager, string skinAsset, int rows, int columns, Vector2? startLocation = null)
       : base(skinAsset, rows, columns)
     {
       _graphicsManager = aGraphicsManager;
       _minX = 0;
       _maxX = _graphicsManager.GraphicsDevice.Viewport.Height - 80;
-      Position = new Vector2(_maxX, 500);
+      Position = startLocation.HasValue ? startLocation.Value : new Vector2(_maxX, 500);
       _currentDirection = MoveDirection.Left;
     }
 

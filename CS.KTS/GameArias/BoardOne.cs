@@ -2,7 +2,7 @@ using CS.KTS.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
-
+using System.Linq;
 namespace CS.KTS
 {
   /// <summary>
@@ -19,9 +19,9 @@ namespace CS.KTS
     public delegate void Test(string value);
     public Test ConsoleWrite;
     private string _pressedButton;
-
     private Player _player;
-    private EnemyWalker _walker;
+    private System.Collections.Generic.List<EnemyWalker> _walkers = new System.Collections.Generic.List<EnemyWalker>();
+    private System.Random rand = new System.Random();
     private int BoardHeight
     {
       get { return _graphics.GraphicsDevice.Viewport.Width; }
@@ -81,9 +81,7 @@ namespace CS.KTS
 
       _player = new Player("player", "bullit", 1, 2, new Vector2(500, 500));
       _player.LoadContent(Content);
-
-      _walker = new EnemyWalker(_graphics, "wizardTest", 1, 2);
-      _walker.LoadContent(Content);
+      AddWalkers(2);
     }
 
     private void OnToucht(object sender, InputControlSprite.ButtonEventArgs e)
@@ -136,11 +134,10 @@ namespace CS.KTS
       // TODO: Add your update logic here
       _controls.OnUpdate(TouchPanel.GetState());
       _background.Update(gameTime, 10, ScrollingBackgroundSprite.HorizontalScrollDirection.Left);
+      CheckAndRemove();
       CheckEnemyHits();
       _player.Update(gameTime);
-
-
-      _walker.Update(gameTime);
+      _walkers.ForEach(w => w.Update(gameTime));
       base.Update(gameTime);
     }
 
@@ -148,21 +145,48 @@ namespace CS.KTS
     {
       foreach (var projectile in _player.Projectiles)
       {
-        if (_walker.IsColliding(projectile))
-        { 
-          _walker.DoRemove = true;
-          _walker.SetDead();
-          var xPos = _walker.Position.X + (_walker.Size.Width/2) -45;
-          projectile.SetHit();
-          projectile.Position = new Vector2(xPos, projectile.Position.Y);
-
+        foreach (var walker in _walkers)
+        {
+          if (walker.IsColliding(projectile))
+          {
+            walker.DoRemove = true;
+            walker.SetDead();
+            var xPos = walker.Position.X + (walker.Size.Width / 2) - 45;
+            projectile.SetHit();
+            projectile.Position = new Vector2(xPos, projectile.Position.Y);
+          }
         }
+        
+      }
+    }
+
+    public void AddWalkers(int count)
+    {
+      var maxWidth = _graphics.GraphicsDevice.Viewport.Height - 80;
+      for (int i = 0; i < count; i++)
+      {
+        var startX = rand.Next(100, maxWidth);
+        var  walker = new EnemyWalker(_graphics, "wizardTest", 1, 2, new Vector2(startX, 500));
+        walker.LoadContent(Content);
+        _walkers.Add(walker);
       }
     }
 
     public void CheckAndRemove()
-    { 
+    {
+      var ps = _player.Projectiles.ToList();
+      foreach (var p in ps)
+      {
+        if (p.DoRemove)
+          _player.Projectiles.Remove(p);
+      }
 
+      var ws = _walkers.ToList();
+      foreach (var walker in ws)
+      {
+        if (walker.DoRemove)
+          _walkers.Remove(walker);
+      }
     }
 
     /// <summary>
@@ -181,7 +205,7 @@ namespace CS.KTS
       _spriteBatch.End();
 
       _player.Draw(_spriteBatch);
-      _walker.Draw(_spriteBatch);
+      _walkers.ForEach(w => w.Draw(_spriteBatch));
       base.Draw(gameTime);
 
       GraphicsDevice.SetRenderTarget(null);

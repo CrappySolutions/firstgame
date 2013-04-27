@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input.Touch;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,30 +10,50 @@ namespace CS.KTS.Sprites
 {
   public class InputControlSprite
   {
+    public enum ButtonType
+    {
+      Left,
+      Right,
+      A,
+      B,
+      C
+    }
+    public sealed class ButtonEventArgs : EventArgs
+    {
+      public ButtonEventArgs(ButtonType button)
+      {
+        Button = button;
+      }
+      public ButtonType Button { get; private set; }
+    }
+    public event EventHandler<ButtonEventArgs> Toucht;
     private Button _leftButton;
     private Button _rightButton;
     private Button _aButton;
     private Button _bButton;
+    private Button _cButton;
     private readonly Microsoft.Xna.Framework.Content.ContentManager _contentManager;
     private readonly GraphicsDeviceManager _graphicsDevice;
+   
     public InputControlSprite(Microsoft.Xna.Framework.Content.ContentManager contentManager, GraphicsDeviceManager device)
     {
+      
       _contentManager = contentManager;
       _graphicsDevice = device;
       var viewPort = _graphicsDevice.GraphicsDevice.Viewport;
-      _leftButton = new Button();
-      _leftButton.LoadContent(contentManager, "ButtonLeft");
-      _leftButton.Scale = 1f;
-      _leftButton.Position = new Vector2(200, 200);//viewPort.Width - (_leftButton.Size.Width * 2) - 20, viewPort.Height - (_leftButton.Size.Height));
-
-      
       _rightButton = new Button();
       _rightButton.LoadContent(contentManager, "ButtonRight");
       _rightButton.Scale = 1f;
-      _rightButton.Position = new Vector2(400, 200); //(viewPort.Width - (_rightButton.Size.Width * 2) - 10, viewPort.Height - (_rightButton.Size.Height));
+      _rightButton.Position = new Vector2(50, viewPort.Width - _rightButton.Size.Height + 50);
       
+      _leftButton = new Button();
+      _leftButton.LoadContent(contentManager, "ButtonLeft");
+      _leftButton.Scale = 1f;
+      _leftButton.Position = new Vector2(50 + _leftButton.Size.Height, viewPort.Width - _leftButton.Size.Height +50);
+
       _aButton = new Button();
       _bButton = new Button();
+      _cButton = new Button();
     }
 
     public void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch batch)
@@ -40,7 +61,28 @@ namespace CS.KTS.Sprites
       _leftButton.Draw(batch);
       _rightButton.Draw(batch);
     }
-    
+
+    public void OnUpdate(TouchCollection touchLocations) 
+    {
+      foreach (TouchLocation loc in touchLocations)
+       {
+         if (_rightButton.IsPressed(loc, _graphicsDevice.GraphicsDevice.Viewport.Width))
+         {
+           RaiseToucht(ButtonType.Right);
+         }
+         else if (_leftButton.IsPressed(loc, _graphicsDevice.GraphicsDevice.Viewport.Width))
+         {
+           RaiseToucht(ButtonType.Left);
+         }
+
+       }
+    }
+
+    private void RaiseToucht(ButtonType button)
+    {
+      if (Toucht != null)
+        Toucht(this, new ButtonEventArgs(button));
+    }
 
   }
 }

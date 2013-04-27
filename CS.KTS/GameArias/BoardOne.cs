@@ -165,7 +165,7 @@ namespace CS.KTS
       for (int i = 0; i < count; i++)
       {
         var startX = rand.Next(100, maxWidth);
-        var  walker = new EnemyWalker(_graphics, "wizardTest", 1, 2, new Vector2(startX, 500));
+        var  walker = new EnemyWalker(_graphics, "walker", 1, 3, new Vector2(startX, 500));
         walker.LoadContent(Content);
         _walkers.Add(walker);
       }

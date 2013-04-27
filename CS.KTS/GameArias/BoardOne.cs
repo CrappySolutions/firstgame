@@ -21,6 +21,16 @@ namespace CS.KTS
     private string _pressedButton;
 
     private Player _player;
+    private EnemyWalker _walker;
+    private int BoardHeight
+    {
+      get { return _graphics.GraphicsDevice.Viewport.Width; }
+    }
+
+    private int BoardWidth
+    {
+      get { return _graphics.GraphicsDevice.Viewport.Height; }
+    }
 
     public BoardOne()
     {
@@ -71,6 +81,9 @@ namespace CS.KTS
 
       _player = new Player("player", "", 1, 1, new Vector2(500, 500));
       _player.LoadContent(Content);
+
+      _walker = new EnemyWalker(_graphics, "player", 1, 1);
+      _walker.LoadContent(Content);
     }
 
     private void OnToucht(object sender, InputControlSprite.ButtonEventArgs e)
@@ -111,15 +124,6 @@ namespace CS.KTS
     {
       // TODO: Unload any non ContentManager content here
     }
-    private int BoardHeight 
-    {
-      get { return _graphics.GraphicsDevice.Viewport.Width; }
-    }
-
-    private int BoardWidth
-    {
-      get { return _graphics.GraphicsDevice.Viewport.Height; }
-    }
 
     /// <summary>
     /// Allows the game to run logic such as updating the world,
@@ -132,7 +136,7 @@ namespace CS.KTS
       _controls.OnUpdate(TouchPanel.GetState());
       _background.Update(gameTime, 10, ScrollingBackgroundSprite.HorizontalScrollDirection.Left);
       _player.Update(gameTime);
-
+      _walker.Update(gameTime);
       base.Update(gameTime);
     }
 
@@ -152,7 +156,7 @@ namespace CS.KTS
       _spriteBatch.End();
 
       _player.Draw(_spriteBatch);
-
+      _walker.Draw(_spriteBatch);
       base.Draw(gameTime);
 
       GraphicsDevice.SetRenderTarget(null);

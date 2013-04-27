@@ -22,13 +22,6 @@ namespace CS.KTS.Sprites
       _projectileAssetName = weaponSkinAsset;
     }
 
-    public Player(Texture2D texture, int rows, int columns, Vector2 startPoint, string projectileAssetName)
-      : base(texture, rows, columns)
-    {
-      Position = startPoint;
-      _projectileAssetName = projectileAssetName;
-    }
-
     public override void LoadContent(Microsoft.Xna.Framework.Content.ContentManager theContentManager)
     {
       _contentManager = theContentManager;

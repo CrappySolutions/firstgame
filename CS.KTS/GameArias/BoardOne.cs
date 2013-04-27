@@ -10,7 +10,8 @@ namespace CS.KTS
     {
         GraphicsDeviceManager _graphics;
         SpriteBatch _spriteBatch;
-
+        CS.KTS.Sprites.InputControlSprite _controls;
+        private RenderTarget2D _renderTarget;
         public BoardOne()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -38,7 +39,8 @@ namespace CS.KTS
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            _controls = new Sprites.InputControlSprite(Content, _graphics);
+            _renderTarget = new RenderTarget2D(_graphics.GraphicsDevice, _graphics.GraphicsDevice.Viewport.Width, _graphics.GraphicsDevice.Viewport.Height, false, SurfaceFormat.Color, DepthFormat.Depth16);
             // TODO: use this.Content to load your game content here
         }
 
@@ -69,11 +71,22 @@ namespace CS.KTS
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+          GraphicsDevice.SetRenderTarget(_renderTarget);   
+          GraphicsDevice.Clear(Color.White);
+          
+          base.Draw(gameTime);
+          GraphicsDevice.SetRenderTarget(null); 
+          _spriteBatch.Begin();
+       //   _controls.Draw(_spriteBatch);
+          DrawLandscape(385, 200);
+          _spriteBatch.End();
+          // TODO: Add your drawing code here
+        }
 
-            // TODO: Add your drawing code here
 
-            base.Draw(gameTime);
+        private void DrawLandscape(float x, float y)
+        {
+          _spriteBatch.Draw(_renderTarget, new Vector2(x, y), null, Color.White, MathHelper.PiOver2, new Vector2(y, x), 1f, SpriteEffects.None, 0);
         }
     }
 }

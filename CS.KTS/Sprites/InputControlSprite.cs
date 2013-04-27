@@ -44,23 +44,23 @@ namespace CS.KTS.Sprites
       var viewPort = _graphicsDevice.GraphicsDevice.Viewport;
 
       _leftButton = new Button();
-      _leftButton.LoadContent(contentManager, "ButtonRight");
+      _leftButton.LoadContent(contentManager, "LeftButton");
       _leftButton.Scale = 1f;
-      _leftButton.Position = new Vector2(0, viewPort.Width - _leftButton.Size.Height + 10);
+      _leftButton.Position = new Vector2(0, viewPort.Width - _leftButton.Size.Height - 50);
 
       _rightButton = new Button();
-      _rightButton.LoadContent(contentManager, "ButtonLeft");
+      _rightButton.LoadContent(contentManager, "RightButton");
       _rightButton.Scale = 1f;
-      _rightButton.Position = new Vector2(0 + _rightButton.Size.Height, viewPort.Width - _rightButton.Size.Height + 10);
+      _rightButton.Position = new Vector2(0 + _rightButton.Size.Height + 50, viewPort.Width - _rightButton.Size.Height - 50);
 
 
       _bButton = new Button();
-      _bButton.LoadContent(contentManager, "btnB");
+      _bButton.LoadContent(contentManager, "bButton");
       _bButton.Scale = 1.2f;
       _bButton.Position = new Vector2(_graphicsDevice.GraphicsDevice.Viewport.Height - (_bButton.Size.Height * 2) - 100, _graphicsDevice.GraphicsDevice.Viewport.Width - _bButton.Size.Width - 50);
 
       _aButton = new Button();
-      _aButton.LoadContent(contentManager, "btnA");
+      _aButton.LoadContent(contentManager, "aButton");
       _aButton.Scale = 1.2f;
       _aButton.Position = new Vector2(_graphicsDevice.GraphicsDevice.Viewport.Height - (_aButton.Size.Height) - 50, _graphicsDevice.GraphicsDevice.Viewport.Width - _aButton.Size.Width - 50);
       

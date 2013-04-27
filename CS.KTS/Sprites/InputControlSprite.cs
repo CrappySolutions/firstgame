@@ -46,15 +46,25 @@ namespace CS.KTS.Sprites
       _rightButton = new Button();
       _rightButton.LoadContent(contentManager, "ButtonRight");
       _rightButton.Scale = 1f;
-      _rightButton.Position = new Vector2(0, viewPort.Width - _rightButton.Size.Height + 50);
+      _rightButton.Position = new Vector2(0, viewPort.Width - _rightButton.Size.Height + 10);
 
       _leftButton = new Button();
       _leftButton.LoadContent(contentManager, "ButtonLeft");
       _leftButton.Scale = 1f;
-      _leftButton.Position = new Vector2(0 + _leftButton.Size.Height, viewPort.Width - _leftButton.Size.Height + 50);
+      _leftButton.Position = new Vector2(0 + _leftButton.Size.Height, viewPort.Width - _leftButton.Size.Height + 10);
+
 
       _aButton = new Button();
+      _aButton.LoadContent(contentManager, "btnB");
+      _aButton.Scale = 1.2f;
+      _aButton.Position = new Vector2(_graphicsDevice.GraphicsDevice.Viewport.Height - (_aButton.Size.Height * 2) -100, _graphicsDevice.GraphicsDevice.Viewport.Width - _aButton.Size.Width - 50);
+
       _bButton = new Button();
+      _bButton.LoadContent(contentManager, "btnA");
+      _bButton.Scale = 1.2f;
+      _bButton.Position = new Vector2(_graphicsDevice.GraphicsDevice.Viewport.Height - (_aButton.Size.Height) - 50, _graphicsDevice.GraphicsDevice.Viewport.Width - _aButton.Size.Width - 50);
+
+      
       _cButton = new Button();
     }
 
@@ -62,6 +72,8 @@ namespace CS.KTS.Sprites
     {
       _leftButton.Draw(batch);
       _rightButton.Draw(batch);
+      _aButton.Draw(batch);
+      _bButton.Draw(batch);
     }
 
     public void OnUpdate(TouchCollection touchLocations)
@@ -81,6 +93,14 @@ namespace CS.KTS.Sprites
         else if (_leftButton.IsPressed(loc, _graphicsDevice.GraphicsDevice.Viewport.Width))
         {
           RaiseToucht(ButtonType.Right);
+        }
+        else if(_aButton.IsPressed(loc,_graphicsDevice.GraphicsDevice.Viewport.Width)
+        {
+          RaiseToucht(ButtonType.A);
+        }
+        else if(_bButton.IsPressed(loc,_graphicsDevice.GraphicsDevice.Viewport.Width)
+        {
+          RaiseToucht(ButtonType.B);
         }
       }
     }

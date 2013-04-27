@@ -1,6 +1,7 @@
 using CS.KTS.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace CS.KTS
 {
@@ -31,7 +32,7 @@ namespace CS.KTS
     protected override void Initialize()
     {
       // TODO: Add your initialization logic here
-
+            TouchPanel.EnabledGestures = GestureType.FreeDrag | GestureType.Tap | GestureType.Hold; 
       base.Initialize();
     }
 
@@ -98,7 +99,6 @@ namespace CS.KTS
       _spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
       _background.Draw(_spriteBatch);
       _spriteBatch.End();
-
       base.Draw(gameTime);
 
       GraphicsDevice.SetRenderTarget(null);

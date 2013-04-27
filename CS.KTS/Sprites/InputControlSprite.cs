@@ -22,13 +22,13 @@ namespace CS.KTS.Sprites
       var viewPort = _graphicsDevice.GraphicsDevice.Viewport;
       _leftButton = new Button();
       _leftButton.LoadContent(contentManager, "ButtonLeft");
-      _leftButton.Scale = 2f;
+      _leftButton.Scale = 1f;
       _leftButton.Position = new Vector2(200, 200);//viewPort.Width - (_leftButton.Size.Width * 2) - 20, viewPort.Height - (_leftButton.Size.Height));
 
       
       _rightButton = new Button();
       _rightButton.LoadContent(contentManager, "ButtonRight");
-      _rightButton.Scale = 2f;
+      _rightButton.Scale = 1f;
       _rightButton.Position = new Vector2(400, 200); //(viewPort.Width - (_rightButton.Size.Width * 2) - 10, viewPort.Height - (_rightButton.Size.Height));
       
       _aButton = new Button();

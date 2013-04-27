@@ -23,28 +23,28 @@ namespace CS.KTS
             InitializeComponent();
 
             _game = XamlGame<BoardOne>.Create("", XnaSurface);
-            _game.ConsoleWrite = (a) => { Dispatcher.BeginInvoke(() => Test.Text = a); };
-            _game.HPWriter = (a) => { 
-              Dispatcher.BeginInvoke(() => 
-                {
-                    HP.Text = int.Parse(a) <= 0 ? "You are Dead" : string.Format("HP: {0}", a);
-                    if (int.Parse(a) <= 0)
-                    {
-                      NavigationService.Navigate(new Uri("/Xaml/DeadView.xaml", UriKind.Relative));
-                    }
-                }); 
-            };
+            //_game.ConsoleWrite = (a) => { Dispatcher.BeginInvoke(() => Test.Text = a); };
+            //_game.HPWriter = (a) => { 
+            //  Dispatcher.BeginInvoke(() => 
+            //    {
+            //        HP.Text = int.Parse(a) <= 0 ? "You are Dead" : string.Format("HP: {0}", a);
+            //        if (int.Parse(a) <= 0)
+            //        {
+            //          NavigationService.Navigate(new Uri("/Xaml/DeadView.xaml", UriKind.Relative));
+            //        }
+            //    }); 
+            //};
 
-            _game.FinishedWriter = (a) => 
-            {
-              Dispatcher.BeginInvoke(() =>
-              {
-                Test.Text = a;
-                //NavigationService.Navigate(new Uri("/Xaml/CompletedVIew.xaml", UriKind.Relative));
-              });
-            };
-            // Sample code to localize the ApplicationBar
-            //BuildLocalizedApplicationBar();
+            //_game.FinishedWriter = (a) => 
+            //{
+            //  Dispatcher.BeginInvoke(() =>
+            //  {
+            //    Test.Text = a;
+            //    //NavigationService.Navigate(new Uri("/Xaml/CompletedVIew.xaml", UriKind.Relative));
+            //  });
+            //};
+            //// Sample code to localize the ApplicationBar
+            ////BuildLocalizedApplicationBar();
         }
 
         // Sample code for building a localized ApplicationBar

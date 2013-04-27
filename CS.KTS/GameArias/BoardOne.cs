@@ -16,10 +16,10 @@ namespace CS.KTS
     private RenderTarget2D _renderTarget;
     private bool firstUpdate = true;
     private ScrollingBackgroundSprite _background;
-    public delegate void WriteTextHandler(string value);
-    public WriteTextHandler ConsoleWrite;
-    public WriteTextHandler HPWriter;
-    public WriteTextHandler FinishedWriter;
+    //public delegate void WriteTextHandler(string value);
+    //public WriteTextHandler ConsoleWrite;
+    //public WriteTextHandler HPWriter;
+    //public WriteTextHandler FinishedWriter;
     private string _pressedButton;
     private Player _player;
     private System.Collections.Generic.List<EnemyWalker> _walkers = new System.Collections.Generic.List<EnemyWalker>();
@@ -83,25 +83,25 @@ namespace CS.KTS
 
       _player = new Player("player", "bullit", 1, 2, new Vector2(500, 500));
       _player.LoadContent(Content);
-      HPWriter(_player.HP.ToString());
+      //HPWriter(_player.HP.ToString());
       AddWalkers(2);
     }
 
     private void OnToucht(object sender, InputControlSprite.ButtonEventArgs e)
     {
       _pressedButton = e.Button.ToString();
-      ConsoleWrite(_pressedButton);
+      //ConsoleWrite(_pressedButton);
       switch (e.Button)
       {
         case InputControlSprite.ButtonType.Left:
-          if(Vector2.Distance(new Vector2(_player.Position.X, 0), new Vector2(0, 0)) > 20)
+          if (Vector2.Distance(new Vector2(_player.Position.X, 0), new Vector2(0, 0)) > 20)
             _player.CurrentMovement = new Movement { Direction = MoveDirection.Left, Type = MovementType.Walking };
           else
             _player.CurrentMovement = new Movement { Direction = MoveDirection.Stop, Type = MovementType.Walking };
           break;
         case InputControlSprite.ButtonType.Right:
           if (Vector2.Distance(new Vector2(_player.Position.X, 0), new Vector2(BoardWidth, 0)) > 80)
-           _player.CurrentMovement = new Movement { Direction = MoveDirection.Right, Type = MovementType.Walking };
+            _player.CurrentMovement = new Movement { Direction = MoveDirection.Right, Type = MovementType.Walking };
           else
             _player.CurrentMovement = new Movement { Direction = MoveDirection.Stop, Type = MovementType.Walking };
           break;
@@ -152,8 +152,8 @@ namespace CS.KTS
         {
           if (walker.IsColliding(projectile) && !walker.IsDead)
           {
-            
-            walker.SetDead();
+
+            walker.IsHit(30);
             var xPos = walker.Position.X + (walker.Size.Width / 2) - 45;
             projectile.SetHit();
             projectile.Position = new Vector2(xPos, projectile.Position.Y);
@@ -166,7 +166,7 @@ namespace CS.KTS
         if (_player.IsColliding(walker) && !walker.IsDead)
         {
           _player.HP -= 10;
-          HPWriter(_player.HP.ToString());
+          //HPWriter(_player.HP.ToString());
         }
       }
     }
@@ -177,14 +177,14 @@ namespace CS.KTS
       for (int i = 0; i < count; i++)
       {
         var startX = rand.Next(100, maxWidth);
-        var  walker = new EnemyWalker(_graphics, "walker", 1, 3, new Vector2(startX, 500));
+        var walker = new EnemyWalker(_graphics, "walker", 1, 3, new Vector2(startX, 500));
         walker.LoadContent(Content);
         _walkers.Add(walker);
       }
     }
 
     public void CheckAndRemove()
-    { 
+    {
       var ps = _player.Projectiles.ToList();
       foreach (var p in ps)
       {
@@ -205,7 +205,7 @@ namespace CS.KTS
       if (removed && _walkers.Count == 0)
       {
         AddWalkers(2);
-       // FinishedWriter("Completed");
+        // FinishedWriter("Completed");
       }
     }
 

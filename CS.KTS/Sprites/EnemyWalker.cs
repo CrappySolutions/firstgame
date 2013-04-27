@@ -15,12 +15,14 @@ namespace CS.KTS.Sprites
     private float _minX;
     private float _maxX;
     private MoveDirection _currentDirection;
-
     private TimeSpan? _deadTime;
+
+    public int Hp { get; set; }
 
     public EnemyWalker(GraphicsDeviceManager aGraphicsManager, string skinAsset, int rows, int columns, Vector2? startLocation = null)
       : base(skinAsset, rows, columns)
     {
+      Hp = 100;
       _graphicsManager = aGraphicsManager;
       _minX = 0;
       _maxX = _graphicsManager.GraphicsDevice.Viewport.Height - 80;
@@ -104,6 +106,12 @@ namespace CS.KTS.Sprites
       IsDead = true;
       _currentFrameIndex = 2;
       mCurrentState = State.Dead;
+    }
+
+    public void IsHit(int damage)
+    {
+      Hp -= damage;
+      if (Hp <= 0) SetDead();
     }
   }
 }

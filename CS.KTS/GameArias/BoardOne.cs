@@ -101,7 +101,7 @@ namespace CS.KTS
           break;
         case InputControlSprite.ButtonType.Right:
           if (Vector2.Distance(new Vector2(_player.Position.X, 0), new Vector2(BoardWidth, 0)) > 80)
-            _player.CurrentMovement = new Movement { Direction = MoveDirection.Right, Type = MovementType.Walking };
+           _player.CurrentMovement = new Movement { Direction = MoveDirection.Right, Type = MovementType.Walking };
           else
             _player.CurrentMovement = new Movement { Direction = MoveDirection.Stop, Type = MovementType.Walking };
           break;
@@ -153,7 +153,7 @@ namespace CS.KTS
         {
           if (walker.IsColliding(projectile) && !walker.IsDead)
           {
-
+            
             walker.IsHit(30);
             var xPos = walker.Position.X + (walker.Size.Width / 2) - 45;
             projectile.SetHit();
@@ -185,7 +185,7 @@ namespace CS.KTS
     }
 
     public void CheckAndRemove()
-    {
+    { 
       var ps = _player.Projectiles.ToList();
       foreach (var p in ps)
       {
@@ -206,7 +206,7 @@ namespace CS.KTS
       if (removed && _walkers.Count == 0)
       {
         AddWalkers(2);
-        // FinishedWriter("Completed");
+       // FinishedWriter("Completed");
       }
     }
 

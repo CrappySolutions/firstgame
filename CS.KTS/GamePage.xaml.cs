@@ -21,6 +21,13 @@ namespace CS.KTS
         public GamePage()
         {
             InitializeComponent();
+            Init();
+            // Sample code to localize the ApplicationBar
+            //BuildLocalizedApplicationBar();
+        }
+
+        private void Init()
+        {
 
             _game = XamlGame<BoardOne>.Create("", XnaSurface);
             //_game.ConsoleWrite = (a) => { Dispatcher.BeginInvoke(() => Test.Text = a); };
@@ -47,6 +54,10 @@ namespace CS.KTS
             ////BuildLocalizedApplicationBar();
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+          base.OnNavigatedTo(e);
+        }
         // Sample code for building a localized ApplicationBar
         //private void BuildLocalizedApplicationBar()
         //{

@@ -8,6 +8,7 @@ namespace CS.KTS.Data
 {
   public class Player : Character
   {
+
     public double HP { get; set; }
 
     public double XP { get; set; }

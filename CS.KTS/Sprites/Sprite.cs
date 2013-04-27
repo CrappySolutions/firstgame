@@ -7,29 +7,27 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-
-namespace WP8GameTest
+namespace CS.KTS.Sprites
 {
-  public class Sprite
+  public abstract class Sprite
   {
     //The current position of the Sprite
-    public Vector2 Position = new Vector2(0, 0);
+    public Vector2 Position { get; set; }
 
     //The texture object used when drawing the sprite
-    public Texture2D SpriteTexture;
+    public Texture2D SpriteTexture { get; set; }
 
     //The asset name for the Sprite's Texture
-    public string AssetName;
+    public string AssetName { get; set; }
 
     //The Size of the Sprite (with scale applied)
-    public Rectangle Size;
+    public Rectangle Size { get; set; }
 
-    public bool DoRemove;
+    public bool DoRemove { get; set; }
 
-
-    public Rectangle BoundingBox 
+    public Rectangle BoundingBox
     {
-      get { return new Rectangle((int)Position.X, (int)Position.Y, SpriteTexture.Width, SpriteTexture.Height); } 
+      get { return new Rectangle((int)Position.X, (int)Position.Y, SpriteTexture.Width, SpriteTexture.Height); }
     }
 
     //The amount to increase/decrease the size of the original sprite. When
@@ -47,6 +45,11 @@ namespace WP8GameTest
       }
     }
 
+    public Sprite()
+    {
+      Position = new Vector2(0, 0);
+    }
+
     //Load the texture for the sprite using the Content Pipeline
     public virtual void LoadContent(ContentManager theContentManager, string theAssetName)
     {
@@ -56,10 +59,12 @@ namespace WP8GameTest
     }
 
     //Update the Sprite and change it's position based on the passed in speed, direction and elapsed time.
-    public void Update(GameTime theGameTime, Vector2 theSpeed, Vector2 theDirection)
+    public virtual void Update(GameTime theGameTime, Vector2 theSpeed, Vector2 theDirection)
     {
       Position += theDirection * theSpeed * (float)theGameTime.ElapsedGameTime.TotalSeconds;
     }
+
+    public virtual void Update() { }
 
     //Draw the sprite to the screen
     public virtual void Draw(SpriteBatch theSpriteBatch)
@@ -68,6 +73,8 @@ namespace WP8GameTest
           new Rectangle(0, 0, SpriteTexture.Width, SpriteTexture.Height),
           Color.White, 0.0f, Vector2.Zero, Scale, SpriteEffects.None, 0);
     }
+
+    public virtual void Draw(SpriteBatch spriteBatch, Vector2 location) { }
 
     /// <summary>
     /// 
@@ -78,6 +85,5 @@ namespace WP8GameTest
     {
       return this.BoundingBox.Intersects(otherObject.BoundingBox);
     }
-
   }
 }

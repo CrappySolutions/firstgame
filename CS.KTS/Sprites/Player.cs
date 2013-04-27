@@ -55,6 +55,8 @@ namespace CS.KTS.Sprites
         }
         if (createProjectile)
         {
+          if (string.IsNullOrEmpty(_projectileAssetName))
+            return;
           var projectile = new Projectile(_contentManager.Load<Texture2D>(_projectileAssetName), 0, 0);
           //_contentManager
           projectile.Fire(firePosition, new Vector2(200, 0), new Vector2(1, 0));

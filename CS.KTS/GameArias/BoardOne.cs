@@ -82,7 +82,7 @@ namespace CS.KTS
       _player = new Player("player", "player", 1, 1, new Vector2(500, 500));
       _player.LoadContent(Content);
 
-      _walker = new EnemyWalker(_graphics, "player", 1, 1);
+      _walker = new EnemyWalker(_graphics, "wizardTest", 1, 2);
       _walker.LoadContent(Content);
     }
 

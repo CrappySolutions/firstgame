@@ -15,8 +15,8 @@ namespace CS.KTS.Sprites
     private float _minX;
     private float _maxX;
     private MoveDirection _currentDirection;
-    public EnemyWalker(GraphicsDeviceManager aGraphicsManager,string skinAsset, int rows, int columns)
-        : base(skinAsset, rows, columns)
+    public EnemyWalker(GraphicsDeviceManager aGraphicsManager, string skinAsset, int rows, int columns)
+      : base(skinAsset, rows, columns)
     {
       _graphicsManager = aGraphicsManager;
       _minX = 0;
@@ -28,7 +28,7 @@ namespace CS.KTS.Sprites
     public override void LoadContent(ContentManager theContentManager)
     {
       _contentManager = theContentManager;
-      _currentFrameIndex = 0;
+      _currentFrameIndex = 1;
       _totalFrameCount = Rows * Columns;
       base.LoadContent(theContentManager);
     }
@@ -40,15 +40,16 @@ namespace CS.KTS.Sprites
       {
         if (Position.X - _minX <= 20)
         {
-          Columns = 2;
+          _currentFrameIndex = 0;
           _currentDirection = MoveDirection.Right;
         }
       }
       else if (_currentDirection == MoveDirection.Right)
       {
+
         if (_maxX - Position.X <= 20)
         {
-          Columns = 1;
+          _currentFrameIndex = 1;
           _currentDirection = MoveDirection.Left;
         }
       }

@@ -23,7 +23,7 @@ namespace CS.KTS
             InitializeComponent();
 
             _game = XamlGame<BoardOne>.Create("", XnaSurface);
-
+            _game.ConsoleWrite = (a) => { Dispatcher.BeginInvoke(() => Test.Text = a); };
             // Sample code to localize the ApplicationBar
             //BuildLocalizedApplicationBar();
         }

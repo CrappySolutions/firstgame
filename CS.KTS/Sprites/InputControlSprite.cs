@@ -44,12 +44,12 @@ namespace CS.KTS.Sprites
       _rightButton = new Button();
       _rightButton.LoadContent(contentManager, "ButtonRight");
       _rightButton.Scale = 1f;
-      _rightButton.Position = new Vector2(50, viewPort.Width - _rightButton.Size.Height + 50);
+      _rightButton.Position = new Vector2(0, viewPort.Width - _rightButton.Size.Height + 50);
       
       _leftButton = new Button();
       _leftButton.LoadContent(contentManager, "ButtonLeft");
       _leftButton.Scale = 1f;
-      _leftButton.Position = new Vector2(50 + _leftButton.Size.Height, viewPort.Width - _leftButton.Size.Height +50);
+      _leftButton.Position = new Vector2(0 + _leftButton.Size.Height, viewPort.Width - _leftButton.Size.Height +50);
 
       _aButton = new Button();
       _bButton = new Button();

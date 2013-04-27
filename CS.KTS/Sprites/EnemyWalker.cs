@@ -58,6 +58,10 @@ namespace CS.KTS.Sprites
         UpdateMovement(movement);
         base.Update(gameTime, mSpeed, mDirection);
       }
+      if (IsDead)
+      {
+        DoRemove = true;
+      }
     }
 
     protected override void UpdateMovement(Movement movement)
@@ -84,6 +88,7 @@ namespace CS.KTS.Sprites
     internal void SetDead()
     {
       IsDead = true;
+      _currentFrameIndex = 2;
       mCurrentState = State.Dead;
     }
   }

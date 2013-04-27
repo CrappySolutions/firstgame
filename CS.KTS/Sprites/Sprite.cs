@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 namespace CS.KTS.Sprites
 {
-  public abstract class Sprite
+  public abstract class Sprite : IDisposable
   {
     //The current position of the Sprite
     public Vector2 Position { get; set; }
@@ -90,6 +90,19 @@ namespace CS.KTS.Sprites
     public bool IsColliding(Sprite otherObject)
     {
       return this.BoundingBox.Intersects(otherObject.BoundingBox);
+    }
+
+    public void Dispose()
+    {
+      try
+      {
+        SpriteTexture.Dispose();
+      }
+      catch (Exception)
+      {
+        
+      }
+      
     }
   }
 }

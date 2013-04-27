@@ -24,7 +24,12 @@ namespace CS.KTS.Sprites
       if(!DoRemove)
         DoRemove = (Vector2.Distance(StartPosition, Position) > MAX_DISTANCE);
       if (!DoRemove)
-        Position += mDirection * mSpeed * (float)theGameTime.ElapsedGameTime.TotalSeconds;
+      {
+        if (_direction == MoveDirection.Right)
+          Position += mDirection * mSpeed * (float)theGameTime.ElapsedGameTime.TotalSeconds;
+        else
+          Position -= mDirection * mSpeed * (float)theGameTime.ElapsedGameTime.TotalSeconds;
+      }
     }
 
     public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
@@ -36,15 +41,18 @@ namespace CS.KTS.Sprites
 
       Rectangle sourceRectangle = new Rectangle(width * column, height * row, width, height);
       Rectangle destinationRectangle = new Rectangle((int)Position.X, (int)Position.Y, width, height);
-
       //spriteBatch.Begin();
       spriteBatch.Draw(SpriteTexture, destinationRectangle, sourceRectangle, Color.White);
       //spriteBatch.End();
     }
-
-    public void Fire(Vector2 theStartPosition, Vector2 theSpeed, Vector2 theDirection)
+    private MoveDirection _direction;
+    public void Fire(Vector2 theStartPosition, Vector2 theSpeed, Vector2 theDirection, MoveDirection playerDirection)
     {
-      Position = theStartPosition;
+      _direction = playerDirection;
+      if (playerDirection == MoveDirection.Right)
+        Position = new Vector2(theStartPosition.X - 80, theStartPosition.Y - 25);
+      else
+        Position = new Vector2(theStartPosition.X - 50, theStartPosition.Y - 25);
       StartPosition = theStartPosition;
       mSpeed = theSpeed;
       mDirection = theDirection;

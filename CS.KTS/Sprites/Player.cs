@@ -50,7 +50,7 @@ namespace CS.KTS.Sprites
         SendProjectile = false;
         var firePosition = new Vector2(Position.X + 90, Position.Y + 25);
         var projectile = new Projectile(_contentManager.Load<Texture2D>(_projectileAssetName), 1, 2);
-        projectile.Fire(firePosition, new Vector2(500, 0), new Vector2(1, 0));
+        projectile.Fire(firePosition, new Vector2(500, 0), new Vector2(1, 0), _currentFrameIndex == 0 ? MoveDirection.Right : MoveDirection.Left);
         Projectiles.Add(projectile);
       }
       

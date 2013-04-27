@@ -146,18 +146,17 @@ namespace CS.KTS
       foreach (var projectile in _player.Projectiles)
       {
         foreach (var walker in _walkers)
-        { 
+        {
           if (walker.IsColliding(projectile))
           {
             walker.DoRemove = true;
             walker.SetDead();
             var xPos = walker.Position.X + (walker.Size.Width / 2) - 45;
-          projectile.SetHit();
-          projectile.Position = new Vector2(xPos, projectile.Position.Y);
+            projectile.SetHit();
+            projectile.Position = new Vector2(xPos, projectile.Position.Y);
           }
         }
-
-        }
+      }
     }
 
     public void AddWalkers(int count)
@@ -185,7 +184,9 @@ namespace CS.KTS
       foreach (var walker in ws)
       {
         if (walker.DoRemove)
+        {
           _walkers.Remove(walker);
+        }
       }
     }
 

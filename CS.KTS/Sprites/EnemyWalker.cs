@@ -40,6 +40,7 @@ namespace CS.KTS.Sprites
       {
         if (Position.X - _minX <= 20)
         {
+          Columns = 2;
           _currentDirection = MoveDirection.Right;
         }
       }
@@ -47,11 +48,26 @@ namespace CS.KTS.Sprites
       {
         if (_maxX - Position.X <= 20)
         {
+          Columns = 1;
           _currentDirection = MoveDirection.Left;
         }
       }
       UpdateMovement(movement);
       base.Update(gameTime, movement);
+    }
+
+    protected override void UpdateMovement(Movement movement)
+    {
+      if (mCurrentState == State.Walking)
+      {
+        mSpeed = Vector2.Zero;
+        mDirection = Vector2.Zero;
+        mSpeed.X = 80;
+        if (movement.Direction == MoveDirection.Up || movement.Direction == MoveDirection.Down)
+          mDirection.Y = AnimatedSprite.Constants.DirectionOffsets[movement.Direction];
+        else
+          mDirection.X = AnimatedSprite.Constants.DirectionOffsets[movement.Direction];
+      }
     }
 
     public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)

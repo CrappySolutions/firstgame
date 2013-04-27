@@ -39,7 +39,7 @@ namespace CS.KTS.Sprites
 
   public abstract class AnimatedSprite : Sprite
   {
-    private static class Constants
+    protected static class Constants
     {
       public static readonly Dictionary<MovementType, int> MovementSpeed = new Dictionary<MovementType, int> 
       { 
@@ -62,7 +62,7 @@ namespace CS.KTS.Sprites
     
     public int Columns { get; set; }
    
-    State mCurrentState = State.Walking;
+    protected State mCurrentState = State.Walking;
     
     protected Vector2 mDirection = Vector2.Zero;
     

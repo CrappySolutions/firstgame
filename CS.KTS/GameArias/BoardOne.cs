@@ -69,7 +69,7 @@ namespace CS.KTS
       _background.AddBackground("level1Test");
       _background.LoadContent(this.Content);
 
-      _player = new Player("player", "", 1, 1, new Vector2(500, 500));
+      _player = new Player("player", "player", 1, 1, new Vector2(500, 500));
       _player.LoadContent(Content);
     }
 
@@ -92,6 +92,7 @@ namespace CS.KTS
             _player.CurrentMovement = new Movement { Direction = MoveDirection.Stop, Type = MovementType.Walking };
           break;
         case InputControlSprite.ButtonType.A:
+          _player.SendProjectile = true;
           break;
         case InputControlSprite.ButtonType.B:
           break;

@@ -16,7 +16,7 @@ namespace CS.KTS.Sprites
     public bool SendProjectile { get; set; }
 
     public Player(string skinAsset, string weaponSkinAsset, int rows, int columns, Vector2 startPoint)
-        : base(skinAsset, rows, columns)
+      : base(skinAsset, rows, columns)
     {
       Position = startPoint;
       _projectileAssetName = weaponSkinAsset;
@@ -44,36 +44,23 @@ namespace CS.KTS.Sprites
     public void Update(GameTime theGameTime)
     {
       base.Update(theGameTime, CurrentMovement);
+
+      if (SendProjectile)
+      {
+        SendProjectile = false;
+        var firePosition = new Vector2(Position.X + 80, Position.Y + 25);
+        var projectile = new Projectile(_contentManager.Load<Texture2D>(_projectileAssetName), 0, 0);
+        projectile.Fire(firePosition, new Vector2(500, 0), new Vector2(1, 0));
+        _projectiles.Add(projectile);
+      }
+      
       foreach (var projectile in _projectiles)
       {
         projectile.Update(theGameTime, CurrentMovement);
       }
-      if (SendProjectile)
-      {
-        var firePosition = new Vector2(Position.X + 50, Position.Y + 25);
-        var createProjectile = true;
-        foreach (var projectile in _projectiles)
-        {
-          if (!projectile.DoRemove)
-          {
-            createProjectile = false;
-            projectile.Fire(firePosition, new Vector2(200, 0), new Vector2(1, 0));
-          }
-        }
-        if (createProjectile)
-        {
-          if (string.IsNullOrEmpty(_projectileAssetName))
-            return;
-          var projectile = new Projectile(_contentManager.Load<Texture2D>(_projectileAssetName), 0, 0);
-          //_contentManager
-          projectile.Fire(firePosition, new Vector2(200, 0), new Vector2(1, 0));
-          _projectiles.Add(projectile);
-        }
-        SendProjectile = false;
-      }
     }
 
-    public override void Draw(SpriteBatch spriteBatch) 
+    public override void Draw(SpriteBatch spriteBatch)
     {
       base.Draw(spriteBatch);
       spriteBatch.Begin();

@@ -14,7 +14,7 @@ namespace CS.KTS
     CS.KTS.Sprites.InputControlSprite _controls;
     private RenderTarget2D _renderTarget;
     private bool firstUpdate = true;
-    private Sprite background;
+    private ScrollingBackgroundSprite _background;
 
     public BoardOne()
     {
@@ -57,6 +57,10 @@ namespace CS.KTS
       _renderTarget = new RenderTarget2D(_graphics.GraphicsDevice, _graphics.GraphicsDevice.Viewport.Height, _graphics.GraphicsDevice.Viewport.Width, false, SurfaceFormat.Color, DepthFormat.Depth16);
       // TODO: use this.Content to load your game content here
 
+      _background = new ScrollingBackgroundSprite(this.GraphicsDevice.Viewport);
+      _background.AddBackground("level1Test");
+      _background.AddBackground("level1Test");
+      _background.LoadContent(this.Content);
 
     }
 
@@ -77,7 +81,7 @@ namespace CS.KTS
     protected override void Update(GameTime gameTime)
     {
       // TODO: Add your update logic here
-
+      _background.Update(gameTime, 10, ScrollingBackgroundSprite.HorizontalScrollDirection.Left);
       base.Update(gameTime);
     }
 
@@ -89,10 +93,10 @@ namespace CS.KTS
     {
 
       GraphicsDevice.SetRenderTarget(_renderTarget);
-      _graphics.GraphicsDevice.Clear(Color.White);
+      _graphics.GraphicsDevice.Clear(Color.Black);
 
       _spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
-
+      _background.Draw(_spriteBatch);
       _spriteBatch.End();
 
       base.Draw(gameTime);

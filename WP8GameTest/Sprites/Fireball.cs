@@ -12,7 +12,7 @@ namespace WP8GameTest.Sprites
 {
   public class Fireball : AnimatedPlayer
   {
-    const int MAX_DISTANCE = 500;
+    const int MAX_DISTANCE = 700;
 
     public bool Visible = false;
 

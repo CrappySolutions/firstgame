@@ -25,7 +25,7 @@ namespace WP8GameTest.Sprites
     private int currentFrame;
     private int totalFrames;
 
-    List<Fireball> _fireballs;
+    public List<Fireball> Fireballs;
     ContentManager mContentManager;
 
     enum State
@@ -37,11 +37,9 @@ namespace WP8GameTest.Sprites
     Vector2 mDirection = Vector2.Zero;
     Vector2 mSpeed = Vector2.Zero;
 
-
-
     public void LoadContent(ContentManager theContentManager, string assetname, int rows, int columns, Vector2 startPosition)
     {
-      _fireballs = new List<Fireball>();
+      Fireballs = new List<Fireball>();
       mContentManager = theContentManager;
       Rows = rows;
       Columns = columns;
@@ -49,7 +47,7 @@ namespace WP8GameTest.Sprites
       totalFrames = Rows * Columns;
       Position = startPosition;
 
-      foreach (Fireball aFireball in _fireballs)
+      foreach (Fireball aFireball in Fireballs)
       {
         aFireball.LoadContent(theContentManager);
       }
@@ -60,8 +58,6 @@ namespace WP8GameTest.Sprites
       base.LoadContent(theContentManager, assetname);
     }
 
-    //The Rectangular area from the original image that 
-    //defines the Sprite. 
     Rectangle mSource;
     public Rectangle Source
     {
@@ -141,7 +137,12 @@ namespace WP8GameTest.Sprites
 
       spriteBatch.Begin();
       spriteBatch.Draw(SpriteTexture, destinationRectangle, sourceRectangle, Color.White);
+      foreach (Fireball aFireball in Fireballs)
+      {
+        aFireball.Draw(spriteBatch);
+      }
       spriteBatch.End();
+          
     }
 
     public MoveDirection CanMove(float gameWindowWidth, float gameWindowHeight, MoveDirection playerMoveDirection)
@@ -176,16 +177,19 @@ namespace WP8GameTest.Sprites
       return playerMoveDirection;
     }
 
+    public bool Fire;
+
     private void UpdateFireball(GameTime theGameTime, MoveDirection moveDirection)
     {
-      foreach (Fireball aFireball in _fireballs)
+      foreach (Fireball aFireball in Fireballs)
       {
         aFireball.Update(theGameTime);
       }
 
-      if (moveDirection == MoveDirection.Right)
+      if (Fire)
       {
         ShootFireball();
+        Fire = false;
       }
     }
 
@@ -194,24 +198,26 @@ namespace WP8GameTest.Sprites
       if (mCurrentState == State.Walking)
       {
         bool aCreateNew = true;
-        foreach (Fireball aFireball in _fireballs)
+        var firePosition = new Vector2(Position.X + 50, Position.Y + 25);
+        foreach (Fireball aFireball in Fireballs)
         {
           if (aFireball.Visible == false)
           {
             aCreateNew = false;
-            aFireball.Fire(Position + new Vector2(Size.Width / 2, Size.Height / 2),
-                new Vector2(200, 0), new Vector2(1, 0));
+            aFireball.Fire(firePosition, new Vector2(200, 0), new Vector2(1, 0));
             break;
           }
         }
+        
+        if (Fireballs.Count > 0) return;
 
         if (aCreateNew == true)
         {
           Fireball aFireball = new Fireball();
           aFireball.LoadContent(mContentManager);
-          aFireball.Fire(Position + new Vector2(Size.Width / 2, Size.Height / 2),
-              new Vector2(200, 200), new Vector2(1, 0));
-          _fireballs.Add(aFireball);
+          //aFireball.Fire(new Vector2(Position.X, Position.Y) + new Vector2(Size.Width / 2, Size.Height / 2), new Vector2(200, 200), new Vector2(1, 0));
+          aFireball.Fire(firePosition, new Vector2(200, 200), new Vector2(1, 0));
+          Fireballs.Add(aFireball);
         }
       }
     }

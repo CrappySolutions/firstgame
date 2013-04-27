@@ -24,6 +24,8 @@ namespace WP8GameTest
     //The Size of the Sprite (with scale applied)
     public Rectangle Size;
 
+    public bool DoRemove;
+
     public Rectangle BoundingBox 
     {
       get { return new Rectangle((int)Position.X, (int)Position.Y, SpriteTexture.Width, SpriteTexture.Height); } 

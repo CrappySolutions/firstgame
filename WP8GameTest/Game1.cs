@@ -9,6 +9,7 @@ using System;
 using WP8GameTest.Entities;
 using WP8GameTest.Sprites;
 using System.Windows;
+using System.Collections.Generic;
 
 namespace WP8GameTest
 {
@@ -37,13 +38,15 @@ namespace WP8GameTest
 
     private AnimatedPlayer animatedPlayer;
 
+    private List<Sprite> targets;
+
     #endregion
 
     public Game1()
     {
       graphics = new GraphicsDeviceManager(this);
       Content.RootDirectory = "Content";
-
+      
       TouchPanel.EnabledGestures = GestureType.FreeDrag | GestureType.Tap | GestureType.Hold | GestureType.Hold;
     }
 
@@ -110,6 +113,24 @@ namespace WP8GameTest
 
       animatedPlayer = new AnimatedPlayer();
       animatedPlayer.LoadContent(Content, "SmileyWalk", 4, 4, new Vector2(100, 500));
+
+      targets = new List<Sprite>();
+      AddNewTargets();
+    }
+
+    Random rand = new Random();
+
+    private void AddNewTargets()
+    {
+      for (int i = 0; i < 4; i++)
+      {
+        var randomY = rand.Next(200, 900);
+
+        var t = new Sprite();
+        t.LoadContent(Content, "stickBig");
+        t.Position = new Vector2(randomY, 500);
+        targets.Add(t);
+      }
     }
 
     protected override void UnloadContent()
@@ -143,6 +164,10 @@ namespace WP8GameTest
 
       animatedPlayer.Update(gameTime, playerMoveDirection);
 
+      RemoveObjects();
+
+      CheckFireball();
+
       base.Update(gameTime);
     }
 
@@ -167,6 +192,9 @@ namespace WP8GameTest
 
       buttonA.Draw(spriteBatch);
       buttonB.Draw(spriteBatch);
+
+      targets.ForEach(t => t.Draw(spriteBatch));
+
       spriteBatch.End();
 
       animatedPlayer.DrawAnimation(spriteBatch);
@@ -189,6 +217,43 @@ namespace WP8GameTest
 
     #region Private methods
 
+    private void RemoveObjects()
+    {
+      for (int i = animatedPlayer.Fireballs.Count -1; i >=0; i--)
+      {
+        if (animatedPlayer.Fireballs[i].DoRemove)
+        {
+          animatedPlayer.Fireballs.RemoveAt(i);
+        }
+      }
+
+      for (int i = targets.Count - 1; i >= 0; i--)
+      {
+        if (targets[i].DoRemove)
+        {
+          targets.RemoveAt(i);
+        }
+      }
+
+    }
+
+    private void CheckFireball()
+    {
+      foreach (var fireball in animatedPlayer.Fireballs)
+      {
+        for (int i = targets.Count-1; i >=0; i--)
+        {
+          if (targets[i].IsColliding(fireball))
+          {
+            targets[i].DoRemove = true;
+            fireball.DoRemove = true;
+          }
+        }
+        if (targets.Count == 0)
+          AddNewTargets();
+      }
+    }
+
     private void HandleTouch()
     {
       var touchCollection = TouchPanel.GetState();
@@ -198,7 +263,7 @@ namespace WP8GameTest
 
         if (buttonA.IsPressed(loc, GameWindowHeight))
         {
-
+          animatedPlayer.Fire = true;
         }
 
         if (buttonB.IsPressed(loc, GameWindowHeight))

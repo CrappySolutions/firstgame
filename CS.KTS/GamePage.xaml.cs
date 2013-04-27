@@ -21,32 +21,47 @@ namespace CS.KTS
         public GamePage()
         {
             InitializeComponent();
-
-            _game = XamlGame<BoardOne>.Create("", XnaSurface);
-            _game.ConsoleWrite = (a) => { Dispatcher.BeginInvoke(() => Test.Text = a); };
-            _game.HPWriter = (a) => { 
-              Dispatcher.BeginInvoke(() => 
-                {
-                    HP.Text = int.Parse(a) <= 0 ? "You are Dead" : string.Format("HP: {0}", a);
-                    if (int.Parse(a) <= 0)
-                    {
-                      NavigationService.Navigate(new Uri("/Xaml/DeadView.xaml", UriKind.Relative));
-                    }
-                }); 
-            };
-
-            _game.FinishedWriter = (a) => 
-            {
-              Dispatcher.BeginInvoke(() =>
-              {
-                Test.Text = a;
-                NavigationService.Navigate(new Uri("/Xaml/CompletedVIew.xaml", UriKind.Relative));
-              });
-            };
+            Init();
             // Sample code to localize the ApplicationBar
             //BuildLocalizedApplicationBar();
         }
 
+        private void Init()
+        {
+
+          _game = XamlGame<BoardOne>.Create("", XnaSurface);
+          _game.ConsoleWrite = (a) => { Dispatcher.BeginInvoke(() => Test.Text = a); };
+          _game.HPWriter = (a) =>
+          {
+            Dispatcher.BeginInvoke(() =>
+            {
+              HP.Text = int.Parse(a) <= 0 ? "You are Dead" : string.Format("HP: {0}", a);
+              if (int.Parse(a) <= 0)
+              {
+                NavigationService.Navigate(new Uri("/Xaml/DeadView.xaml", UriKind.Relative));
+              }
+            });
+          };
+
+          _game.FinishedWriter = (a) =>
+          {
+            Dispatcher.BeginInvoke(() =>
+            {
+              Test.Text = a;
+              NavigationService.Navigate(new Uri("/Xaml/CompletedVIew.xaml", UriKind.Relative));
+            });
+          };
+        }
+
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+          base.OnNavigatingFrom(e);
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+          base.OnNavigatedTo(e);
+        }
         // Sample code for building a localized ApplicationBar
         //private void BuildLocalizedApplicationBar()
         //{

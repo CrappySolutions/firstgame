@@ -53,7 +53,8 @@ namespace CS.KTS.Sprites
         {MoveDirection.Down , 1},
         {MoveDirection.Up , -1},
         {MoveDirection.Left , -1},
-        {MoveDirection.Right , 1}
+        {MoveDirection.Right , 1},
+        {MoveDirection.Stop , 0}
       };
     }
 

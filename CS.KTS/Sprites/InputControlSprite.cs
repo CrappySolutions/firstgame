@@ -16,7 +16,8 @@ namespace CS.KTS.Sprites
       Right,
       A,
       B,
-      C
+      C,
+      None
     }
     public sealed class ButtonEventArgs : EventArgs
     {
@@ -34,22 +35,23 @@ namespace CS.KTS.Sprites
     private Button _cButton;
     private readonly Microsoft.Xna.Framework.Content.ContentManager _contentManager;
     private readonly GraphicsDeviceManager _graphicsDevice;
-   
+
     public InputControlSprite(Microsoft.Xna.Framework.Content.ContentManager contentManager, GraphicsDeviceManager device)
     {
-      
+
       _contentManager = contentManager;
       _graphicsDevice = device;
       var viewPort = _graphicsDevice.GraphicsDevice.Viewport;
+
       _rightButton = new Button();
       _rightButton.LoadContent(contentManager, "ButtonRight");
       _rightButton.Scale = 1f;
       _rightButton.Position = new Vector2(0, viewPort.Width - _rightButton.Size.Height + 50);
-      
+
       _leftButton = new Button();
       _leftButton.LoadContent(contentManager, "ButtonLeft");
       _leftButton.Scale = 1f;
-      _leftButton.Position = new Vector2(0 + _leftButton.Size.Height, viewPort.Width - _leftButton.Size.Height +50);
+      _leftButton.Position = new Vector2(0 + _leftButton.Size.Height, viewPort.Width - _leftButton.Size.Height + 50);
 
       _aButton = new Button();
       _bButton = new Button();
@@ -62,20 +64,25 @@ namespace CS.KTS.Sprites
       _rightButton.Draw(batch);
     }
 
-    public void OnUpdate(TouchCollection touchLocations) 
+    public void OnUpdate(TouchCollection touchLocations)
     {
-      foreach (TouchLocation loc in touchLocations)
-       {
-         if (_rightButton.IsPressed(loc, _graphicsDevice.GraphicsDevice.Viewport.Width))
-         {
-           RaiseToucht(ButtonType.Right);
-         }
-         else if (_leftButton.IsPressed(loc, _graphicsDevice.GraphicsDevice.Viewport.Width))
-         {
-           RaiseToucht(ButtonType.Left);
-         }
+      if (touchLocations.Count <= 0)
+      {
+        RaiseToucht(ButtonType.None);
+        return;
+      }
 
-       }
+      foreach (TouchLocation loc in touchLocations)
+      {
+        if (_rightButton.IsPressed(loc, _graphicsDevice.GraphicsDevice.Viewport.Width))
+        {
+          RaiseToucht(ButtonType.Left);
+        }
+        else if (_leftButton.IsPressed(loc, _graphicsDevice.GraphicsDevice.Viewport.Width))
+        {
+          RaiseToucht(ButtonType.Right);
+        }
+      }
     }
 
     private void RaiseToucht(ButtonType button)

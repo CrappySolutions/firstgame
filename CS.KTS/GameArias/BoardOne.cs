@@ -18,8 +18,10 @@ namespace CS.KTS
     private ScrollingBackgroundSprite _background;
     public delegate void Test(string value);
     public Test ConsoleWrite;
-    private Sprite background;
     private string _pressedButton;
+
+    private Player _player;
+
     public BoardOne()
     {
       _graphics = new GraphicsDeviceManager(this);
@@ -67,12 +69,27 @@ namespace CS.KTS
       _background.AddBackground("level1Test");
       _background.LoadContent(this.Content);
 
+      _player = new Player(Content.Load<Texture2D>("player"), 1, 1, new Vector2(500, 500), "player");
+      _player.LoadContent(Content, "player");
+
     }
 
     private void OnToucht(object sender, InputControlSprite.ButtonEventArgs e)
     {
       _pressedButton = e.Button.ToString();
       ConsoleWrite(_pressedButton);
+      if (e.Button == InputControlSprite.ButtonType.Left)
+      { 
+        _player.CurrentMovement = new Movement{Direction = MoveDirection.Left,Type = MovementType.Walking};
+      }
+      else if (e.Button == InputControlSprite.ButtonType.Right)
+      { 
+        _player.CurrentMovement = new Movement{Direction = MoveDirection.Right,Type = MovementType.Walking};
+      }
+      else if(e.Button == InputControlSprite.ButtonType.None)
+      {
+        _player.CurrentMovement = new Movement{Direction = MoveDirection.Stop,Type = MovementType.Walking};
+      }
     }
 
     /// <summary>
@@ -94,6 +111,9 @@ namespace CS.KTS
       // TODO: Add your update logic here
       _controls.OnUpdate(TouchPanel.GetState());
       _background.Update(gameTime, 10, ScrollingBackgroundSprite.HorizontalScrollDirection.Left);
+
+      _player.Update(gameTime);
+
       base.Update(gameTime);
     }
 
@@ -111,6 +131,9 @@ namespace CS.KTS
       _background.Draw(_spriteBatch);
       _controls.Draw(_spriteBatch);
       _spriteBatch.End();
+
+      _player.Draw(_spriteBatch);
+
       base.Draw(gameTime);
 
       GraphicsDevice.SetRenderTarget(null);

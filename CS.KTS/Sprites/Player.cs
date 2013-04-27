@@ -34,12 +34,12 @@ namespace CS.KTS.Sprites
       }
     }
 
-    public override void Update(GameTime theGameTime, Movement movement)
+    public void Update(GameTime theGameTime)
     {
-      base.Update(theGameTime, movement);
+      base.Update(theGameTime, CurrentMovement);
       foreach (var projectile in _projectiles)
       {
-        projectile.Update(theGameTime, movement);
+        projectile.Update(theGameTime, CurrentMovement);
       }
       if (SendProjectile)
       {
@@ -70,12 +70,13 @@ namespace CS.KTS.Sprites
     {
       base.Draw(spriteBatch);
       spriteBatch.Begin();
-      spriteBatch.Begin();
       foreach (var proj in _projectiles)
       {
         proj.Draw(spriteBatch);
       }
       spriteBatch.End();
     }
+
+    public Movement CurrentMovement { get; set; }
   }
 }

@@ -46,8 +46,6 @@ namespace WP8GameTest
       }
     }
 
-    
-
     //Load the texture for the sprite using the Content Pipeline
     public virtual void LoadContent(ContentManager theContentManager, string theAssetName)
     {

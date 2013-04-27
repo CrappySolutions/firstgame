@@ -204,7 +204,8 @@ namespace CS.KTS
       }
       if (removed && _walkers.Count == 0)
       {
-        FinishedWriter("Completed");
+        AddWalkers(2);
+       // FinishedWriter("Completed");
       }
     }
 

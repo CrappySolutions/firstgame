@@ -25,7 +25,7 @@ namespace CS.KTS.Sprites
 
     public bool DoRemove { get; set; }
 
-    public Rectangle BoundingBox
+    public virtual Rectangle BoundingBox
     {
       get { return new Rectangle((int)Position.X, (int)Position.Y, SpriteTexture.Width, SpriteTexture.Height); }
     }

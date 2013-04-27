@@ -36,6 +36,8 @@ namespace CS.KTS.Sprites
     {
       int width = SpriteTexture.Width / Columns;
       int height = SpriteTexture.Height / Rows;
+      _sourceHeigth = height;
+      _sourceWidth = width;
       int row = (int)((float)_currentFrameIndex / (float)Columns);
       int column = _currentFrameIndex % Columns;
 

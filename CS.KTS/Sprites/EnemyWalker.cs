@@ -15,6 +15,9 @@ namespace CS.KTS.Sprites
     private float _minX;
     private float _maxX;
     private MoveDirection _currentDirection;
+
+    private TimeSpan? _deadTime;
+
     public EnemyWalker(GraphicsDeviceManager aGraphicsManager, string skinAsset, int rows, int columns, Vector2? startLocation = null)
       : base(skinAsset, rows, columns)
     {
@@ -60,7 +63,18 @@ namespace CS.KTS.Sprites
       }
       if (IsDead)
       {
-        DoRemove = true;
+        if (_deadTime.HasValue)
+        {
+          if ((gameTime.TotalGameTime - _deadTime.Value).Milliseconds > 250)
+          {
+            DoRemove = true;
+          }
+        }
+        else 
+        {
+          _deadTime = gameTime.TotalGameTime;
+        }
+        
       }
     }
 

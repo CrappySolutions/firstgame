@@ -73,6 +73,9 @@ namespace CS.KTS.Sprites
 
     protected int _totalFrameCount;
 
+    protected int _sourceWidth;
+    protected int _sourceHeigth;
+
     public AnimatedSprite(string assetName, int rows, int columns) 
     {
       AssetName = assetName;
@@ -128,6 +131,17 @@ namespace CS.KTS.Sprites
       spriteBatch.Begin();
       spriteBatch.Draw(SpriteTexture, destinationRectangle, sourceRectangle, Color.White);
       spriteBatch.End();
+
+      _sourceHeigth = height;
+      _sourceWidth = width;
+    }
+
+    public override Rectangle BoundingBox
+    {
+      get
+      {
+        return new Rectangle((int)Position.X, (int)Position.Y, _sourceWidth, _sourceHeigth); 
+      }
     }
 
     protected virtual void UpdateMovement(Movement movement)

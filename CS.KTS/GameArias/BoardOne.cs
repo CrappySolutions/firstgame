@@ -79,7 +79,7 @@ namespace CS.KTS
       _background.AddBackground("level1Test");
       _background.LoadContent(this.Content);
 
-      _player = new Player("player", "player", 1, 2, new Vector2(500, 500));
+      _player = new Player("player", "bullit", 1, 2, new Vector2(500, 500));
       _player.LoadContent(Content);
 
       _walker = new EnemyWalker(_graphics, "walker", 1, 3);
@@ -136,9 +136,33 @@ namespace CS.KTS
       // TODO: Add your update logic here
       _controls.OnUpdate(TouchPanel.GetState());
       _background.Update(gameTime, 10, ScrollingBackgroundSprite.HorizontalScrollDirection.Left);
+      CheckEnemyHits();
       _player.Update(gameTime);
+
+
       _walker.Update(gameTime);
       base.Update(gameTime);
+    }
+
+    private void CheckEnemyHits()
+    {
+      foreach (var projectile in _player.Projectiles)
+      {
+        if (_walker.IsColliding(projectile))
+        { 
+          _walker.DoRemove = true;
+          _walker.SetDead();
+          var xPos = _walker.Position.X + (_walker.Size.Width/2) -45;
+          projectile.SetHit();
+          projectile.Position = new Vector2(xPos, projectile.Position.Y);
+
+        }
+      }
+    }
+
+    public void CheckAndRemove()
+    { 
+
     }
 
     /// <summary>

@@ -18,7 +18,8 @@ namespace CS.KTS.Sprites
   }
   public enum State
   {
-    Walking
+    Walking,
+    Dead
   }
 
   public enum MovementType

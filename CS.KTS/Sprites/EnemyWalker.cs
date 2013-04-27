@@ -53,7 +53,7 @@ namespace CS.KTS.Sprites
         }
       }
       UpdateMovement(movement);
-      base.Update(gameTime, movement);
+      base.Update(gameTime, mSpeed, mDirection);
     }
 
     protected override void UpdateMovement(Movement movement)

@@ -79,8 +79,11 @@ namespace CS.KTS.Sprites
       base.Draw(spriteBatch);
     }
 
+    public bool IsDead { get; set; }
+
     internal void SetDead()
     {
+      IsDead = true;
       mCurrentState = State.Dead;
     }
   }

@@ -81,18 +81,19 @@ namespace CS.KTS.Sprites
       if (touchLocations.Count <= 0)
       {
         RaiseToucht(ButtonType.None);
-        return;
       }
-
-      foreach (TouchLocation loc in touchLocations)
+      else
       {
-        if (_rightButton.IsPressed(loc, _graphicsDevice.GraphicsDevice.Viewport.Width))
+        foreach (TouchLocation loc in touchLocations)
         {
-          RaiseToucht(ButtonType.Left);
-        }
-        else if (_leftButton.IsPressed(loc, _graphicsDevice.GraphicsDevice.Viewport.Width))
-        {
-          RaiseToucht(ButtonType.Right);
+          if (_rightButton.IsPressed(loc, _graphicsDevice.GraphicsDevice.Viewport.Width))
+          {
+            RaiseToucht(ButtonType.Left);
+          }
+          else if (_leftButton.IsPressed(loc, _graphicsDevice.GraphicsDevice.Viewport.Width))
+          {
+            RaiseToucht(ButtonType.Right);
+          }
         }
         else if(_aButton.IsPressed(loc,_graphicsDevice.GraphicsDevice.Viewport.Width)
         {

@@ -69,26 +69,37 @@ namespace CS.KTS
       _background.AddBackground("level1Test");
       _background.LoadContent(this.Content);
 
-      _player = new Player(Content.Load<Texture2D>("player"), 1, 1, new Vector2(500, 500), "player");
-      _player.LoadContent(Content, "player");
-
+      _player = new Player("player", "", 1, 1, new Vector2(500, 500));
+      _player.LoadContent(Content);
     }
 
     private void OnToucht(object sender, InputControlSprite.ButtonEventArgs e)
     {
       _pressedButton = e.Button.ToString();
       ConsoleWrite(_pressedButton);
-      if (e.Button == InputControlSprite.ButtonType.Left)
-      { 
-        _player.CurrentMovement = new Movement{Direction = MoveDirection.Left,Type = MovementType.Walking};
-      }
-      else if (e.Button == InputControlSprite.ButtonType.Right)
-      { 
-        _player.CurrentMovement = new Movement{Direction = MoveDirection.Right,Type = MovementType.Walking};
-      }
-      else if(e.Button == InputControlSprite.ButtonType.None)
+      switch (e.Button)
       {
-        _player.CurrentMovement = new Movement{Direction = MoveDirection.Stop,Type = MovementType.Walking};
+        case InputControlSprite.ButtonType.Left:
+          if(Vector2.Distance(new Vector2(_player.Position.X, 0), new Vector2(0, 0)) > 20)
+            _player.CurrentMovement = new Movement { Direction = MoveDirection.Left, Type = MovementType.Walking };
+          else
+            _player.CurrentMovement = new Movement { Direction = MoveDirection.Stop, Type = MovementType.Walking };
+          break;
+        case InputControlSprite.ButtonType.Right:
+          if (Vector2.Distance(new Vector2(_player.Position.X, 0), new Vector2(BoardWidth, 0)) > 80)
+           _player.CurrentMovement = new Movement { Direction = MoveDirection.Right, Type = MovementType.Walking };
+          else
+            _player.CurrentMovement = new Movement { Direction = MoveDirection.Stop, Type = MovementType.Walking };
+          break;
+        case InputControlSprite.ButtonType.A:
+          break;
+        case InputControlSprite.ButtonType.B:
+          break;
+        case InputControlSprite.ButtonType.C:
+          break;
+        case InputControlSprite.ButtonType.None:
+          _player.CurrentMovement = new Movement { Direction = MoveDirection.Stop, Type = MovementType.Walking };
+          break;
       }
     }
 
@@ -99,6 +110,15 @@ namespace CS.KTS
     protected override void UnloadContent()
     {
       // TODO: Unload any non ContentManager content here
+    }
+    private int BoardHeight 
+    {
+      get { return _graphics.GraphicsDevice.Viewport.Width; }
+    }
+
+    private int BoardWidth
+    {
+      get { return _graphics.GraphicsDevice.Viewport.Height; }
     }
 
     /// <summary>
@@ -111,7 +131,6 @@ namespace CS.KTS
       // TODO: Add your update logic here
       _controls.OnUpdate(TouchPanel.GetState());
       _background.Update(gameTime, 10, ScrollingBackgroundSprite.HorizontalScrollDirection.Left);
-
       _player.Update(gameTime);
 
       base.Update(gameTime);

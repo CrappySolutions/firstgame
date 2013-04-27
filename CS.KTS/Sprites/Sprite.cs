@@ -58,6 +58,12 @@ namespace CS.KTS.Sprites
       Size = new Rectangle(0, 0, (int)(SpriteTexture.Width * Scale), (int)(SpriteTexture.Height * Scale));
     }
 
+    public virtual void LoadContent(ContentManager theContentManager)
+    {
+      SpriteTexture = theContentManager.Load<Texture2D>(AssetName);
+      Size = new Rectangle(0, 0, (int)(SpriteTexture.Width * Scale), (int)(SpriteTexture.Height * Scale));
+    }
+
     //Update the Sprite and change it's position based on the passed in speed, direction and elapsed time.
     public virtual void Update(GameTime theGameTime, Vector2 theSpeed, Vector2 theDirection)
     {

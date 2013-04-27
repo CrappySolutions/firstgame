@@ -15,6 +15,13 @@ namespace CS.KTS.Sprites
     private Microsoft.Xna.Framework.Content.ContentManager _contentManager;
     public bool SendProjectile { get; set; }
 
+    public Player(string skinAsset, string weaponSkinAsset, int rows, int columns, Vector2 startPoint)
+        : base(skinAsset, rows, columns)
+    {
+      Position = startPoint;
+      _projectileAssetName = weaponSkinAsset;
+    }
+
     public Player(Texture2D texture, int rows, int columns, Vector2 startPoint, string projectileAssetName)
       : base(texture, rows, columns)
     {
@@ -22,10 +29,10 @@ namespace CS.KTS.Sprites
       _projectileAssetName = projectileAssetName;
     }
 
-    public override void LoadContent(Microsoft.Xna.Framework.Content.ContentManager theContentManager, string theAssetName)
+    public override void LoadContent(Microsoft.Xna.Framework.Content.ContentManager theContentManager)
     {
       _contentManager = theContentManager;
-      base.LoadContent(theContentManager, theAssetName);
+      base.LoadContent(theContentManager);
       _currentFrameIndex = 0;
       _totalFrameCount = Rows * Columns;
       foreach (var projectile in _projectiles)

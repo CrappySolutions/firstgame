@@ -92,7 +92,7 @@ namespace CS.KTS
           _controls.Draw(_spriteBatch);
           _spriteBatch.End();
           base.Draw(gameTime);
-
+          
           GraphicsDevice.SetRenderTarget(null); 
           _spriteBatch.Begin();
 

@@ -112,7 +112,7 @@ namespace WP8GameTest
       //player.LoadContent(this.Content);
 
       animatedPlayer = new AnimatedPlayer();
-      animatedPlayer.LoadContent(Content, "SmileyWalk", 4, 4, new Vector2(100, 500));
+      animatedPlayer.LoadContent(Content, "runningDude", 6, 5, new Vector2(100, 500));
 
       targets = new List<Sprite>();
       AddNewTargets();

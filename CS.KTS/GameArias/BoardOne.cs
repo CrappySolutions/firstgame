@@ -70,7 +70,7 @@ namespace CS.KTS
       }
 
       // Create a new SpriteBatch, which can be used to draw textures.
-      _spriteBatch = new SpriteBatch(GraphicsDevice);
+      _spriteBatch = new SpriteBatch(_graphics.GraphicsDevice);
       _controls = new Sprites.InputControlSprite(Content, _graphics);
       _controls.Toucht += OnToucht;
       _renderTarget = new RenderTarget2D(_graphics.GraphicsDevice, _graphics.GraphicsDevice.Viewport.Height, _graphics.GraphicsDevice.Viewport.Width, false, SurfaceFormat.Color, DepthFormat.Depth16);
@@ -124,7 +124,8 @@ namespace CS.KTS
     /// </summary>
     protected override void UnloadContent()
     {
-      // TODO: Unload any non ContentManager content here
+      //// TODO: Unload any non ContentManager content here
+      //Dispose();
     }
 
     /// <summary>
@@ -215,7 +216,6 @@ namespace CS.KTS
     /// <param name="gameTime">Provides a snapshot of timing values.</param>
     protected override void Draw(GameTime gameTime)
     {
-
       GraphicsDevice.SetRenderTarget(_renderTarget);
       _graphics.GraphicsDevice.Clear(Color.Black);
 

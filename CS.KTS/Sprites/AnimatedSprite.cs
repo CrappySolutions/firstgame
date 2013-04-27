@@ -129,7 +129,7 @@ namespace CS.KTS.Sprites
       spriteBatch.End();
     }
 
-    protected void UpdateMovement(Movement movement)
+    protected virtual void UpdateMovement(Movement movement)
     {
       if (mCurrentState == State.Walking)
       {

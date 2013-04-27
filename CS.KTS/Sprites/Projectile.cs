@@ -40,5 +40,13 @@ namespace CS.KTS.Sprites
       mSpeed = theSpeed;
       mDirection = theDirection;
     }
+
+    protected override void UpdateMovement(Movement movement)
+    {
+      //base.UpdateMovement(movement);
+      mSpeed.X = movement.Direction == MoveDirection.Left ? -300 : 3000;
+      
+      
+    }
   }
 }

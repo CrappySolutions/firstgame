@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CS.KTS.Entities;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using System;
 using System.Collections.Generic;
@@ -40,7 +41,7 @@ namespace CS.KTS.Sprites
 
     public void Update(GameTime gameTime)
     {
-      if (mCurrentState == State.Walking)
+      if (mCurrentState == CharacterState.Walking)
       {
         var movement = new Movement { Direction = _currentDirection, Type = MovementType.Walking };
         if (_currentDirection == MoveDirection.Left)
@@ -82,7 +83,7 @@ namespace CS.KTS.Sprites
 
     protected override void UpdateMovement(Movement movement)
     {
-      if (mCurrentState == State.Walking)
+      if (mCurrentState == CharacterState.Walking)
       {
         mSpeed = Vector2.Zero;
         mDirection = Vector2.Zero;
@@ -105,7 +106,7 @@ namespace CS.KTS.Sprites
     {
       IsDead = true;
       _currentFrameIndex = 2;
-      mCurrentState = State.Dead;
+      mCurrentState = CharacterState.Dead;
     }
 
     public void IsHit(int damage)

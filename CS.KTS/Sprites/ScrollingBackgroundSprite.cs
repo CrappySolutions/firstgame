@@ -40,7 +40,7 @@ namespace CS.KTS.Sprites
       mViewport = theViewport;
     }
 
-    public void LoadContent(ContentManager theContentManager)
+    public override void LoadContent(ContentManager theContentManager)
     {
       //Clear the Sprites currently stored as the left and right ends of the chain
       mRightMostSprite = null;

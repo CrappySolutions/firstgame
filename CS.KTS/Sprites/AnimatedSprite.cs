@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using CS.KTS.Entities;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -8,36 +9,6 @@ using System.Threading.Tasks;
 
 namespace CS.KTS.Sprites
 {
-  public enum MoveDirection
-  {
-    Left,
-    Right,
-    Up,
-    Down,
-    Stop
-  }
-  public enum State
-  {
-    Walking,
-    Dead
-  }
-
-  public enum MovementType
-  {
-    Flying,
-    Walking,
-    Running
-  }
-
-  public class Movement
-  {
-    public MovementType Type { get; set; }
-
-    public MoveDirection Direction { get; set; }
-  }
-
-
-
   public abstract class AnimatedSprite : Sprite
   {
     protected static class Constants
@@ -62,8 +33,8 @@ namespace CS.KTS.Sprites
     public int Rows { get; set; }
     
     public int Columns { get; set; }
-   
-    protected State mCurrentState = State.Walking;
+
+    protected CharacterState mCurrentState = CharacterState.Walking;
     
     protected Vector2 mDirection = Vector2.Zero;
     
@@ -146,7 +117,7 @@ namespace CS.KTS.Sprites
 
     protected virtual void UpdateMovement(Movement movement)
     {
-      if (mCurrentState == State.Walking)
+      if (mCurrentState == CharacterState.Walking)
       {
         mSpeed = Vector2.Zero;
         mDirection = Vector2.Zero;

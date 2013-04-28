@@ -83,7 +83,11 @@
     <Compile Include="Data\Objects\Artifact.cs" />
     <Compile Include="Data\Objects\Shield.cs" />
     <Compile Include="Data\Objects\Weapon.cs" />
+    <Compile Include="Entities\CharacterState.cs" />
     <Compile Include="Entities\Message.cs" />
+    <Compile Include="Entities\MoveDirection.cs" />
+    <Compile Include="Entities\Movement.cs" />
+    <Compile Include="Entities\MovementType.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>

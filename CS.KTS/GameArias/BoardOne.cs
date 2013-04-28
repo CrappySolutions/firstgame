@@ -1,7 +1,9 @@
+using CS.KTS.Entities;
 using CS.KTS.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
+using System;
 using System.Linq;
 namespace CS.KTS
 {
@@ -16,14 +18,17 @@ namespace CS.KTS
     private RenderTarget2D _renderTarget;
     private bool firstUpdate = true;
     private ScrollingBackgroundSprite _background;
-    //public delegate void WriteTextHandler(string value);
+    public delegate void WriteTextHandler(Message message);
     //public WriteTextHandler ConsoleWrite;
-    //public WriteTextHandler HPWriter;
-    //public WriteTextHandler FinishedWriter;
+    public WriteTextHandler HPWriter;
+    public WriteTextHandler FinishedWriter;
     private string _pressedButton;
     private Player _player;
     private System.Collections.Generic.List<EnemyWalker> _walkers = new System.Collections.Generic.List<EnemyWalker>();
     private System.Random rand = new System.Random();
+    private int _waveCount;
+    private TimeSpan? _nextWave;
+
     private int BoardHeight
     {
       get { return _graphics.GraphicsDevice.Viewport.Width; }
@@ -68,7 +73,7 @@ namespace CS.KTS
 
         firstUpdate = false;
       }
-
+      
       // Create a new SpriteBatch, which can be used to draw textures.
       _spriteBatch = new SpriteBatch(_graphics.GraphicsDevice);
       _controls = new Sprites.InputControlSprite(Content, _graphics);
@@ -84,7 +89,7 @@ namespace CS.KTS
       _player = new Player("player", "bullit", 1, 2, new Vector2(500, 500));
       _player.LoadContent(Content);
       //HPWriter(_player.HP.ToString());
-      AddWalkers(2);
+      //AddWalkers(2);
     }
 
     private void OnToucht(object sender, InputControlSprite.ButtonEventArgs e)
@@ -142,9 +147,20 @@ namespace CS.KTS
       CheckEnemyHits();
       _player.Update(gameTime);
       _walkers.ForEach(w => w.Update(gameTime));
+
+      if (!_nextWave.HasValue)
+      {
+        _nextWave = gameTime.TotalGameTime;
+      }
+      if ((gameTime.TotalGameTime - _nextWave.Value).Seconds > 5)
+      {
+        _nextWave = gameTime.TotalGameTime;
+        if(_waveCount < 3) AddWalkers(2);
+      }
+
       base.Update(gameTime);
     }
-
+    Random rand2 = new Random();
     private void CheckEnemyHits()
     {
       foreach (var projectile in _player.Projectiles)
@@ -153,8 +169,11 @@ namespace CS.KTS
         {
           if (walker.IsColliding(projectile) && !walker.IsDead)
           {
-            
-            walker.IsHit(30);
+            var fact = rand2.Next(50, 200);
+            var damage = (8 * fact / 100);
+            walker.IsHit((int)damage);
+            HPWriter(new Message { Text = damage.ToString(), X = (int)walker.Position.X, Y = (int)walker.Position.Y , MessageType = MessageType.Damage} );
+            HPWriter(new Message { Text = walker.Hp.ToString(), MessageType = MessageType.HpLeft });
             var xPos = walker.Position.X + (walker.Size.Width / 2) - 45;
             projectile.SetHit();
             projectile.Position = new Vector2(xPos, projectile.Position.Y);
@@ -167,13 +186,14 @@ namespace CS.KTS
         if (_player.IsColliding(walker) && !walker.IsDead)
         {
           _player.HP -= 10;
-          //HPWriter(_player.HP.ToString());
+          //HPWriter(new Message { Text = "30", X = (int)walker.Position.X, Y = (int)walker.Position.Y });
         }
       }
     }
 
     public void AddWalkers(int count)
     {
+      _waveCount++;
       var maxWidth = _graphics.GraphicsDevice.Viewport.Height - 80;
       for (int i = 0; i < count; i++)
       {
@@ -203,10 +223,9 @@ namespace CS.KTS
           _walkers.Remove(walker);
         }
       }
-      if (removed && _walkers.Count == 0)
+      if (_waveCount == 3 && _walkers.Count == 0)
       {
-        AddWalkers(2);
-       // FinishedWriter("Completed");
+        FinishedWriter(new Message());
       }
     }
 

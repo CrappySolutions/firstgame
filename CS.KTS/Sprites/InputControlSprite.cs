@@ -63,7 +63,7 @@ namespace CS.KTS.Sprites
       _aButton.LoadContent(contentManager, "aButton");
       _aButton.Scale = 1.2f;
       _aButton.Position = new Vector2(_graphicsDevice.GraphicsDevice.Viewport.Height - (_aButton.Size.Height) - 50, _graphicsDevice.GraphicsDevice.Viewport.Width - _aButton.Size.Width - 50);
-      
+
       _cButton = new Button();
     }
 
@@ -94,13 +94,13 @@ namespace CS.KTS.Sprites
             RaiseToucht(ButtonType.Left);
           }
           else if (_aButton.IsPressed(loc, _graphicsDevice.GraphicsDevice.Viewport.Width) && loc.State == TouchLocationState.Released)
-        {
-          RaiseToucht(ButtonType.A);
-        }
-          else if (_bButton.IsPressed(loc, _graphicsDevice.GraphicsDevice.Viewport.Width))
-        {
-          RaiseToucht(ButtonType.B);
-        }
+          {
+            RaiseToucht(ButtonType.A);
+          }
+          else if (_bButton.IsPressed(loc, _graphicsDevice.GraphicsDevice.Viewport.Width) && loc.State == TouchLocationState.Released)
+          {
+            RaiseToucht(ButtonType.B);
+          }
         }
 
       }

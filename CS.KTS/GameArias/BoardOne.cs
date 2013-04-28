@@ -74,7 +74,7 @@ namespace CS.KTS
 
         firstUpdate = false;
       }
-      
+
       // Create a new SpriteBatch, which can be used to draw textures.
       _spriteBatch = new SpriteBatch(_graphics.GraphicsDevice);
       _controls = new Sprites.InputControlSprite(Content, _graphics);
@@ -87,39 +87,45 @@ namespace CS.KTS
       _background.AddBackground("level1Test");
       _background.LoadContent(this.Content);
 
-      _player = new Player("player", "bullit", 1, 2, new Vector2(500, 500));
+      _player = new Player("player2", "bullit", 1, 4, new Vector2(500, 500));
       _player.LoadContent(Content);
-      //HPWriter(_player.HP.ToString());
-      //AddWalkers(2);
     }
 
     private void OnToucht(object sender, InputControlSprite.ButtonEventArgs e)
     {
       _pressedButton = e.Button.ToString();
-      //ConsoleWrite(_pressedButton);
       switch (e.Button)
       {
         case InputControlSprite.ButtonType.Left:
           if (Vector2.Distance(new Vector2(_player.Position.X, 0), new Vector2(0, 0)) > 20)
-            _player.CurrentMovement = new Movement { Direction = MoveDirection.Left, Type = MovementType.Walking };
+            _player.CurrentMovement.Direction = MoveDirection.Left;// = new Movement { Direction = MoveDirection.Left, Type = MovementType.Walking };
           else
-            _player.CurrentMovement = new Movement { Direction = MoveDirection.Stop, Type = MovementType.Walking };
+            _player.CurrentMovement.Direction = MoveDirection.Stop;// = new Movement { Direction = MoveDirection.Stop, Type = MovementType.Walking };
           break;
         case InputControlSprite.ButtonType.Right:
           if (Vector2.Distance(new Vector2(_player.Position.X, 0), new Vector2(BoardWidth, 0)) > 80)
-           _player.CurrentMovement = new Movement { Direction = MoveDirection.Right, Type = MovementType.Walking };
+            _player.CurrentMovement.Direction = MoveDirection.Right;// = new Movement { Direction = MoveDirection.Right, Type = MovementType.Walking };
           else
-            _player.CurrentMovement = new Movement { Direction = MoveDirection.Stop, Type = MovementType.Walking };
+            _player.CurrentMovement.Direction = MoveDirection.Stop;// = new Movement { Direction = MoveDirection.Stop, Type = MovementType.Walking };
           break;
         case InputControlSprite.ButtonType.A:
           _player.SendProjectile = true;
           break;
         case InputControlSprite.ButtonType.B:
+          if (_player.CurrentMovement.Type == MovementType.Crouch)
+          {
+            _player.CurrentMovement.Type = MovementType.Walking;
+          }
+          else if (_player.CurrentMovement.Type == MovementType.Walking)
+          {
+            _player.CurrentMovement.Type = MovementType.Crouch;
+          }
           break;
         case InputControlSprite.ButtonType.C:
           break;
         case InputControlSprite.ButtonType.None:
-          _player.CurrentMovement = new Movement { Direction = MoveDirection.Stop, Type = MovementType.Walking };
+          if (_player.CurrentMovement != null)
+            _player.CurrentMovement.Direction = MoveDirection.Stop;// = new Movement { Direction = MoveDirection.Stop, Type = MovementType.Walking };
           break;
       }
     }
@@ -172,12 +178,12 @@ namespace CS.KTS
       if ((gameTime.TotalGameTime - _nextWave.Value).Seconds > 5)
       {
         _nextWave = gameTime.TotalGameTime;
-        if(_waveCount < 3) AddWalkers(2);
+        if (_waveCount < 3) AddWalkers(2);
       }
 
       base.Update(gameTime);
     }
-    
+
     private void CheckEnemyHits()
     {
       foreach (var projectile in _player.Projectiles)
@@ -186,10 +192,9 @@ namespace CS.KTS
         {
           if (walker.IsColliding(projectile) && !walker.IsDead)
           {
-            var fact = rand2.Next(50, 200);
-            var damage = (8 * fact / 100);
+            var damage = _player.GetDamage();
             walker.IsHit((int)damage);
-            HPWriter(new Message { Text = damage.ToString(), X = (int)walker.Position.X, Y = (int)walker.Position.Y , MessageType = MessageType.PlayerDamageDone} );
+            HPWriter(new Message { Text = damage.ToString(), X = (int)walker.Position.X, Y = (int)walker.Position.Y, MessageType = MessageType.PlayerDamageDone });
             HPWriter(new Message { Text = walker.Hp.ToString(), MessageType = MessageType.TargetHp });
             var xPos = walker.Position.X + (walker.Size.Width / 2) - 45;
             projectile.SetHit();
@@ -222,7 +227,7 @@ namespace CS.KTS
     }
 
     public void CheckAndRemove()
-    { 
+    {
       var ps = _player.Projectiles.ToList();
       foreach (var p in ps)
       {

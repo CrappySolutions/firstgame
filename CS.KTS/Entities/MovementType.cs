@@ -10,6 +10,7 @@ namespace CS.KTS.Entities
   {
     Flying,
     Walking,
-    Running
+    Running,
+    Crouch
   }
 }

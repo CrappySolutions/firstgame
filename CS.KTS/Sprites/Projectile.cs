@@ -53,9 +53,9 @@ namespace CS.KTS.Sprites
     {
       _direction = playerDirection;
       if (playerDirection == MoveDirection.Right)
-        Position = new Vector2(theStartPosition.X - 80, theStartPosition.Y - 25);
+        Position = new Vector2(theStartPosition.X - 80, theStartPosition.Y);
       else
-        Position = new Vector2(theStartPosition.X - 50, theStartPosition.Y - 25);
+        Position = new Vector2(theStartPosition.X - 50, theStartPosition.Y);
       StartPosition = theStartPosition;
       mSpeed = theSpeed;
       mDirection = theDirection;

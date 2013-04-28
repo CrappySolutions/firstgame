@@ -12,6 +12,8 @@ namespace CS.KTS.Entities
     Right,
     Up,
     Down,
-    Stop
+    Stop,
+    CrouchLeft,
+    CrouchRight
   }
 }

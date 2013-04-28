@@ -11,12 +11,16 @@ using Microsoft.Xna.Framework;
 using MonoGame.Framework.WindowsPhone;
 using CS.KTS.Resources;
 using CS.KTS.Entities;
+using System.Windows.Threading;
 
 namespace CS.KTS
 {
   public partial class GamePage : PhoneApplicationPage
   {
     private bool _isDone;
+
+    DispatcherTimer dt = new DispatcherTimer();
+
     // Constructor
     public GamePage()
     {
@@ -29,6 +33,11 @@ namespace CS.KTS
     private void Init()
     {
 
+      dt.Interval = new TimeSpan(0, 0, 0, 0, 500); // 500 Milliseconds
+      dt.Tick += new EventHandler(dt_Tick);
+      dt.Start();
+
+
       App.GameBoard = XamlGame<BoardOne>.Create("", XnaSurface);
       App.GameBoard.HPWriter = (a) =>
       {
@@ -37,6 +46,7 @@ namespace CS.KTS
             switch (a.MessageType)
             {
               case MessageType.PlayerDamageDone:
+                PlayerDamageDone.Visibility = System.Windows.Visibility.Visible;
                 PlayerDamageDone.Text = a.Text;
                 var top = GetPoint(a.Y - 50);
                 var left = GetPoint(a.X + 50);
@@ -78,9 +88,14 @@ namespace CS.KTS
       return pixel * 72 / 120;
     }
 
+    void dt_Tick(object sender, EventArgs e)
+    {
+      PlayerDamageDone.Visibility = System.Windows.Visibility.Collapsed;
+    }
+
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
-      if (App.GameBoard.IsDisposed) return;
+      if (App.GameBoard.IsDisposed) NavigationService.Navigate(new Uri("/Xaml/Menu.xaml", UriKind.Relative));
       base.OnNavigatedTo(e);
     }
 

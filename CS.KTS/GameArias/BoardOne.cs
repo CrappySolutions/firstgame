@@ -39,6 +39,9 @@ namespace CS.KTS
       get { return _graphics.GraphicsDevice.Viewport.Height; }
     }
 
+
+    
+
     public BoardOne()
     {
       _graphics = new GraphicsDeviceManager(this);
@@ -56,6 +59,19 @@ namespace CS.KTS
       TouchPanel.EnabledGestures = GestureType.FreeDrag | GestureType.Tap | GestureType.Hold;
       // TODO: Add your initialization logic here
       base.Initialize();
+    }
+
+    public bool IsDisposed { get; private set; }
+
+    public void ClearBoard()
+    {
+      IsDisposed = true;
+      foreach (var walker in _walkers)
+      {
+        walker.Dispose();
+      }
+      _player.Dispose();
+      _background.Dispose();
     }
 
     /// <summary>
@@ -140,6 +156,8 @@ namespace CS.KTS
     /// <param name="gameTime">Provides a snapshot of timing values.</param>
     protected override void Update(GameTime gameTime)
     {
+      if (IsDisposed) return;
+
       // TODO: Add your update logic here
       _controls.OnUpdate(TouchPanel.GetState());
       _background.Update(gameTime, 10, ScrollingBackgroundSprite.HorizontalScrollDirection.Left);
@@ -160,7 +178,9 @@ namespace CS.KTS
 
       base.Update(gameTime);
     }
+    
     Random rand2 = new Random();
+
     private void CheckEnemyHits()
     {
       foreach (var projectile in _player.Projectiles)
@@ -235,6 +255,8 @@ namespace CS.KTS
     /// <param name="gameTime">Provides a snapshot of timing values.</param>
     protected override void Draw(GameTime gameTime)
     {
+      if (IsDisposed) return;
+
       GraphicsDevice.SetRenderTarget(_renderTarget);
       _graphics.GraphicsDevice.Clear(Color.Black);
 

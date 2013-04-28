@@ -15,7 +15,6 @@ namespace CS.KTS
 {
   public partial class GamePage : PhoneApplicationPage
   {
-    private BoardOne _game;
     private bool _isDone;
     // Constructor
     public GamePage()
@@ -29,8 +28,8 @@ namespace CS.KTS
     private void Init()
     {
 
-      _game = XamlGame<BoardOne>.Create("", XnaSurface);
-      _game.HPWriter = (a) =>
+      App.GameBoard = XamlGame<BoardOne>.Create("", XnaSurface);
+      App.GameBoard.HPWriter = (a) =>
       {
         Dispatcher.BeginInvoke(() =>
           {
@@ -46,7 +45,7 @@ namespace CS.KTS
           });
       };
 
-      _game.FinishedWriter = (a ) =>
+      App.GameBoard.FinishedWriter = (a) =>
       {
         if (_isDone) return;
         else _isDone = true;
@@ -61,20 +60,16 @@ namespace CS.KTS
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
+      if (App.GameBoard.IsDisposed) return;
       base.OnNavigatedTo(e);
     }
 
     protected override void OnNavigatedFrom(NavigationEventArgs e)
     {
-      try
-      {
-        _game.Dispose();
-      }
-      catch (Exception ex)
-      {
-      }
+      App.GameBoard.ClearBoard();
       base.OnNavigatedFrom(e);
     }
+
     // Sample code for building a localized ApplicationBar
     //private void BuildLocalizedApplicationBar()
     //{

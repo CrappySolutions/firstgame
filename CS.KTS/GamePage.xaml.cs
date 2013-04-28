@@ -10,6 +10,7 @@ using Microsoft.Phone.Shell;
 using Microsoft.Xna.Framework;
 using MonoGame.Framework.WindowsPhone;
 using CS.KTS.Resources;
+using CS.KTS.Entities;
 
 namespace CS.KTS
 {
@@ -33,14 +34,28 @@ namespace CS.KTS
       {
         Dispatcher.BeginInvoke(() =>
           {
-            if (a.MessageType == Entities.MessageType.Damage)
+            switch (a.MessageType)
             {
-              DamageDone.Text = a.Text;
+              case MessageType.PlayerDamageDone:
+                PlayerDamageDone.Text = a.Text;
+                var top = GetPoint(a.Y - 50);
+                var left = GetPoint(a.X + 50);
+                Canvas.SetTop(PlayerDamageDone, top);
+                Canvas.SetLeft(PlayerDamageDone, left);
+                break;
+              case MessageType.TargetHp:
+                break;
+              case MessageType.PlayerHp:
+                PlayerHp.Text = a.Text;
+                break;
+              case MessageType.PlayerExp:
+                break;
+              case MessageType.PlayerLevel:
+                break;
+              default:
+                break;
             }
-            else if (a.MessageType == Entities.MessageType.HpLeft)
-            {
-              HpLeft.Text = a.Text;
-            }
+
 
           });
       };
@@ -54,8 +69,13 @@ namespace CS.KTS
           NavigationService.Navigate(new Uri("/Xaml/CompletedVIew.xaml", UriKind.Relative));
         });
       };
-      //// Sample code to localize the ApplicationBar
-      ////BuildLocalizedApplicationBar();
+
+
+    }
+
+    private int GetPoint(int pixel)
+    {
+      return pixel * 72 / 120;
     }
 
     protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -69,21 +89,5 @@ namespace CS.KTS
       App.GameBoard.ClearBoard();
       base.OnNavigatedFrom(e);
     }
-
-    // Sample code for building a localized ApplicationBar
-    //private void BuildLocalizedApplicationBar()
-    //{
-    //    // Set the page's ApplicationBar to a new instance of ApplicationBar.
-    //    ApplicationBar = new ApplicationBar();
-
-    //    // Create a new button and set the text value to the localized string from AppResources.
-    //    ApplicationBarIconButton appBarButton = new ApplicationBarIconButton(new Uri("/Assets/AppBar/appbar.add.rest.png", UriKind.Relative));
-    //    appBarButton.Text = AppResources.AppBarButtonText;
-    //    ApplicationBar.Buttons.Add(appBarButton);
-
-    //    // Create a new menu item with the localized string from AppResources.
-    //    ApplicationBarMenuItem appBarMenuItem = new ApplicationBarMenuItem(AppResources.AppBarMenuItemText);
-    //    ApplicationBar.MenuItems.Add(appBarMenuItem);
-    //}
   }
 }

@@ -1,6 +1,7 @@
 ﻿using CS.KTS.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,13 +18,17 @@ namespace CS.KTS.Sprites
     private float _maxX;
     private MoveDirection _currentDirection;
     private TimeSpan? _deadTime;
+    private HpBarSprite _hpBar;
 
     public int Hp { get; set; }
+    private int _startHp;
 
     public EnemyWalker(GraphicsDeviceManager aGraphicsManager, string skinAsset, int rows, int columns, Vector2? startLocation = null)
       : base(skinAsset, rows, columns)
     {
+      _hpBar = new HpBarSprite(aGraphicsManager,"hpBar",1,3,startLocation);
       Hp = 100;
+      _startHp = 100;
       _graphicsManager = aGraphicsManager;
       _minX = 0;
       _maxX = _graphicsManager.GraphicsDevice.Viewport.Height - 80;
@@ -33,6 +38,7 @@ namespace CS.KTS.Sprites
 
     public override void LoadContent(ContentManager theContentManager)
     {
+      _hpBar.LoadContent(theContentManager);
       _contentManager = theContentManager;
       _currentFrameIndex = 1;
       _totalFrameCount = Rows * Columns;
@@ -41,6 +47,7 @@ namespace CS.KTS.Sprites
 
     public void Update(GameTime gameTime)
     {
+      
       if (mCurrentState == CharacterState.Walking)
       {
         var movement = new Movement { Direction = _currentDirection, Type = MovementType.Walking };
@@ -62,6 +69,8 @@ namespace CS.KTS.Sprites
           }
         }
         UpdateMovement(movement);
+        _hpBar.UpdateFrameIndex(Position, _startHp, Hp);
+        _hpBar.Update(gameTime, mSpeed, mDirection);
         base.Update(gameTime, mSpeed, mDirection);
       }
       if (IsDead)
@@ -77,7 +86,6 @@ namespace CS.KTS.Sprites
         {
           _deadTime = gameTime.TotalGameTime;
         }
-        
       }
     }
 
@@ -97,6 +105,7 @@ namespace CS.KTS.Sprites
 
     public override void Draw(Microsoft.Xna.Framework.Graphics.SpriteBatch spriteBatch)
     {
+      _hpBar.Draw(spriteBatch);
       base.Draw(spriteBatch);
     }
 
@@ -112,6 +121,7 @@ namespace CS.KTS.Sprites
     public void IsHit(int damage)
     {
       Hp -= damage;
+
       if (Hp <= 0) SetDead();
     }
   }

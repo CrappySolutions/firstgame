@@ -12,14 +12,13 @@ namespace CS.KTS
   /// </summary>
   public class BoardOne : Game
   {
-    GraphicsDeviceManager _graphics;
-    SpriteBatch _spriteBatch;
+    private GraphicsDeviceManager _graphics;
+    private SpriteBatch _spriteBatch;
     private Sprites.InputControlSprite _controls;
     private RenderTarget2D _renderTarget;
     private bool firstUpdate = true;
     private ScrollingBackgroundSprite _background;
     public delegate void WriteTextHandler(Message message);
-    //public WriteTextHandler ConsoleWrite;
     public WriteTextHandler HPWriter;
     public WriteTextHandler FinishedWriter;
     private string _pressedButton;
@@ -28,7 +27,7 @@ namespace CS.KTS
     private System.Random rand = new System.Random();
     private int _waveCount;
     private TimeSpan? _nextWave;
-
+    private Random rand2 = new Random();
     private int BoardHeight
     {
       get { return _graphics.GraphicsDevice.Viewport.Width; }
@@ -39,8 +38,7 @@ namespace CS.KTS
       get { return _graphics.GraphicsDevice.Viewport.Height; }
     }
 
-
-    
+    public bool IsDisposed { get; private set; }
 
     public BoardOne()
     {
@@ -59,19 +57,6 @@ namespace CS.KTS
       TouchPanel.EnabledGestures = GestureType.FreeDrag | GestureType.Tap | GestureType.Hold;
       // TODO: Add your initialization logic here
       base.Initialize();
-    }
-
-    public bool IsDisposed { get; private set; }
-
-    public void ClearBoard()
-    {
-      IsDisposed = true;
-      foreach (var walker in _walkers)
-      {
-        walker.Dispose();
-      }
-      _player.Dispose();
-      _background.Dispose();
     }
 
     /// <summary>
@@ -147,6 +132,20 @@ namespace CS.KTS
     {
       //// TODO: Unload any non ContentManager content here
       //Dispose();
+      base.UnloadContent();
+    }
+
+    public void ClearBoard()
+    {
+      IsDisposed = true;
+      foreach (var walker in _walkers)
+      {
+        walker.Dispose();
+      }
+      _player.Dispose();
+      _background.Dispose();
+
+      UnloadContent();
     }
 
     /// <summary>
@@ -179,8 +178,6 @@ namespace CS.KTS
       base.Update(gameTime);
     }
     
-    Random rand2 = new Random();
-
     private void CheckEnemyHits()
     {
       foreach (var projectile in _player.Projectiles)
@@ -192,8 +189,8 @@ namespace CS.KTS
             var fact = rand2.Next(50, 200);
             var damage = (8 * fact / 100);
             walker.IsHit((int)damage);
-            HPWriter(new Message { Text = damage.ToString(), X = (int)walker.Position.X, Y = (int)walker.Position.Y , MessageType = MessageType.Damage} );
-            HPWriter(new Message { Text = walker.Hp.ToString(), MessageType = MessageType.HpLeft });
+            HPWriter(new Message { Text = damage.ToString(), X = (int)walker.Position.X, Y = (int)walker.Position.Y , MessageType = MessageType.PlayerDamageDone} );
+            HPWriter(new Message { Text = walker.Hp.ToString(), MessageType = MessageType.TargetHp });
             var xPos = walker.Position.X + (walker.Size.Width / 2) - 45;
             projectile.SetHit();
             projectile.Position = new Vector2(xPos, projectile.Position.Y);

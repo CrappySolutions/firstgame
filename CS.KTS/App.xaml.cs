@@ -7,6 +7,7 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using CS.KTS.Resources;
+using CS.KTS.Data;
 
 namespace CS.KTS
 {
@@ -19,6 +20,8 @@ namespace CS.KTS
     public static PhoneApplicationFrame RootFrame { get; private set; }
 
     public static BoardOne GameBoard { get; set; }
+
+    public static Player PlayerStats { get; set; }
 
     /// <summary>
     /// Constructor for the Application object.

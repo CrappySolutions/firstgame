@@ -20,7 +20,10 @@ namespace CS.KTS.Entities
 
   public enum MessageType
   { 
-    Damage,
-    HpLeft
+    PlayerDamageDone,
+    TargetHp,
+    PlayerHp,
+    PlayerExp,
+    PlayerLevel
   }
 }

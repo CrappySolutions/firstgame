@@ -18,6 +18,7 @@ namespace CS.KTS
     private RenderTarget2D _renderTarget;
     private bool firstUpdate = true;
     private ScrollingBackgroundSprite _background;
+    private ScrollingBackgroundSprite _foreground;
     public delegate void WriteTextHandler(Message message);
     public WriteTextHandler HPWriter;
     public WriteTextHandler FinishedWriter;
@@ -28,6 +29,9 @@ namespace CS.KTS
     private int _waveCount;
     private TimeSpan? _nextWave;
     private Random rand2 = new Random();
+    private bool _leftIsPressed;
+    private bool _rightIsPressed;
+
     private int BoardHeight
     {
       get { return _graphics.GraphicsDevice.Viewport.Width; }
@@ -65,49 +69,38 @@ namespace CS.KTS
     /// </summary>
     protected override void LoadContent()
     {
-      if (firstUpdate)
-      {
-        // Temp hack to fix gestures
-        typeof(Microsoft.Xna.Framework.Input.Touch.TouchPanel)
-            .GetField("_touchScale", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)
-            .SetValue(null, Vector2.One);
+      TempHackToFixGestures();
 
-        firstUpdate = false;
-      }
-
-      // Create a new SpriteBatch, which can be used to draw textures.
       _spriteBatch = new SpriteBatch(_graphics.GraphicsDevice);
       _controls = new Sprites.InputControlSprite(Content, _graphics);
       _controls.Toucht += OnToucht;
       _renderTarget = new RenderTarget2D(_graphics.GraphicsDevice, _graphics.GraphicsDevice.Viewport.Height, _graphics.GraphicsDevice.Viewport.Width, false, SurfaceFormat.Color, DepthFormat.Depth16);
-      // TODO: use this.Content to load your game content here
 
       _background = new ScrollingBackgroundSprite(this.GraphicsDevice.Viewport);
       _background.AddBackground("level1Test");
       _background.AddBackground("level1Test");
       _background.LoadContent(this.Content);
 
-      _player = new Player("playerChar", "bullit", 1, 4, new Vector2(500, 470));
+      _foreground = new ScrollingBackgroundSprite(this.GraphicsDevice.Viewport);
+      _foreground.AddBackground("Level1Bg/level1Image1");
+      _foreground.AddBackground("Level1Bg/level1Image2");
+      _foreground.AddBackground("Level1Bg/level1Image3");
+      _foreground.LoadContent(Content);
+
+      _player = new Player("playerChar", "bullit", 1, 4, new Vector2(500, 470), BoardWidth);
       _player.LoadContent(Content);
     }
 
     private void OnToucht(object sender, InputControlSprite.ButtonEventArgs e)
     {
       _pressedButton = e.Button.ToString();
+      _player.SetPlayerDirection(e);
+
+      _leftIsPressed = e.Button == InputControlSprite.ButtonType.Left;
+      _rightIsPressed = e.Button == InputControlSprite.ButtonType.Right;
+      
       switch (e.Button)
       {
-        case InputControlSprite.ButtonType.Left:
-          if (Vector2.Distance(new Vector2(_player.Position.X, 0), new Vector2(0, 0)) > 20)
-            _player.CurrentMovement.Direction = MoveDirection.Left;// = new Movement { Direction = MoveDirection.Left, Type = MovementType.Walking };
-          else
-            _player.CurrentMovement.Direction = MoveDirection.Stop;// = new Movement { Direction = MoveDirection.Stop, Type = MovementType.Walking };
-          break;
-        case InputControlSprite.ButtonType.Right:
-          if (Vector2.Distance(new Vector2(_player.Position.X, 0), new Vector2(BoardWidth, 0)) > 80)
-            _player.CurrentMovement.Direction = MoveDirection.Right;// = new Movement { Direction = MoveDirection.Right, Type = MovementType.Walking };
-          else
-            _player.CurrentMovement.Direction = MoveDirection.Stop;// = new Movement { Direction = MoveDirection.Stop, Type = MovementType.Walking };
-          break;
         case InputControlSprite.ButtonType.A:
           _player.SendProjectile = true;
           break;
@@ -125,7 +118,7 @@ namespace CS.KTS
           break;
         case InputControlSprite.ButtonType.None:
           if (_player.CurrentMovement != null)
-            _player.CurrentMovement.Direction = MoveDirection.Stop;// = new Movement { Direction = MoveDirection.Stop, Type = MovementType.Walking };
+            _player.CurrentMovement.Direction = MoveDirection.Stop;
           break;
       }
     }
@@ -162,10 +155,31 @@ namespace CS.KTS
     protected override void Update(GameTime gameTime)
     {
       if (IsDisposed) return;
+      
+      if (_player.ScreenPosition == ScreenPosition.Left && _leftIsPressed)
+      {
+        _foreground.Update(gameTime, 120, ScrollingBackgroundSprite.HorizontalScrollDirection.None);
+      }
+      else if (_player.ScreenPosition == ScreenPosition.Right && _rightIsPressed)
+      {
+        _foreground.Update(gameTime, 120, ScrollingBackgroundSprite.HorizontalScrollDirection.Left);
+      }
+      else
+      {
+        _foreground.Update(gameTime, 0, ScrollingBackgroundSprite.HorizontalScrollDirection.None);
+      }
+
+      if (_rightIsPressed && _player.CurrentMovement.Type != MovementType.Crouch)
+      {
+        _background.Update(gameTime, 20, ScrollingBackgroundSprite.HorizontalScrollDirection.Left);
+      }
+      if (_leftIsPressed && _player.CurrentMovement.Type != MovementType.Crouch)
+      {
+        _background.Update(gameTime, 20, ScrollingBackgroundSprite.HorizontalScrollDirection.None);
+      }
 
       // TODO: Add your update logic here
       _controls.OnUpdate(TouchPanel.GetState());
-      _background.Update(gameTime, 10, ScrollingBackgroundSprite.HorizontalScrollDirection.Left);
       CheckAndRemove();
       CheckEnemyHits();
       _player.Update(gameTime);
@@ -178,7 +192,7 @@ namespace CS.KTS
       if ((gameTime.TotalGameTime - _nextWave.Value).Seconds > 5)
       {
         _nextWave = gameTime.TotalGameTime;
-        if (_waveCount < 3) AddWalkers(2);
+        if (_waveCount < 11) AddWalkers(2);
       }
 
       base.Update(gameTime);
@@ -245,7 +259,7 @@ namespace CS.KTS
           _walkers.Remove(walker);
         }
       }
-      if (_waveCount == 3 && _walkers.Count == 0)
+      if (_waveCount == 10 && _walkers.Count == 0)
       {
         FinishedWriter(new Message());
       }
@@ -264,6 +278,7 @@ namespace CS.KTS
 
       _spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
       _background.Draw(_spriteBatch);
+      _foreground.Draw(_spriteBatch);
       _controls.Draw(_spriteBatch);
       _spriteBatch.End();
 
@@ -285,5 +300,18 @@ namespace CS.KTS
       _spriteBatch.Draw(_renderTarget, new Vector2(x, y), null, Color.White, MathHelper.PiOver2, new Vector2(y, x), 1f, SpriteEffects.None, 0);
     }
 
+
+    private void TempHackToFixGestures()
+    {
+      if (firstUpdate)
+      {
+        // Temp hack to fix gestures
+        typeof(Microsoft.Xna.Framework.Input.Touch.TouchPanel)
+            .GetField("_touchScale", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static)
+            .SetValue(null, Vector2.One);
+
+        firstUpdate = false;
+      }
+    }
   }
 }

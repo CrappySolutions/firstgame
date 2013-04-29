@@ -15,10 +15,10 @@ namespace CS.KTS.Sprites
     {
       public static readonly Dictionary<MovementType, int> MovementSpeed = new Dictionary<MovementType, int> 
       { 
-        { MovementType.Walking, 160 }, 
+        { MovementType.Walking, 150 }, 
         { MovementType.Running, 160 }, 
         { MovementType.Flying, 160 } ,
-        {MovementType.Crouch, 50}
+        {MovementType.Crouch, 0}
       };
 
       public static readonly Dictionary<MoveDirection, int> DirectionOffsets = new Dictionary<MoveDirection, int> 

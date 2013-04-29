@@ -95,7 +95,7 @@ namespace CS.KTS.Sprites
       {
         mSpeed = Vector2.Zero;
         mDirection = Vector2.Zero;
-        mSpeed.X = 80;
+        mSpeed.X = 50;
         if (movement.Direction == MoveDirection.Up || movement.Direction == MoveDirection.Down)
           mDirection.Y = AnimatedSprite.Constants.DirectionOffsets[movement.Direction];
         else

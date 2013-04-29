@@ -84,10 +84,12 @@
     <Compile Include="Data\Objects\Shield.cs" />
     <Compile Include="Data\Objects\Weapon.cs" />
     <Compile Include="Entities\CharacterState.cs" />
+    <Compile Include="Entities\LevelMode.cs" />
     <Compile Include="Entities\Message.cs" />
     <Compile Include="Entities\MoveDirection.cs" />
     <Compile Include="Entities\Movement.cs" />
     <Compile Include="Entities\MovementType.cs" />
+    <Compile Include="Entities\ScreenPosition.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
@@ -102,12 +104,12 @@
     <Compile Include="Sprites\AnimatedSprite.cs" />
     <Compile Include="Sprites\EnemyWalker.cs" />
     <Compile Include="Sprites\HpBarSprite.cs" />
-    <Compile Include="Sprites\ScrollingBackgroundSprite.cs" />
     <Compile Include="Sprites\Button.cs" />
     <Compile Include="Sprites\ImageSprite.cs" />
     <Compile Include="Sprites\InputControlSprite.cs" />
     <Compile Include="Sprites\Player.cs" />
     <Compile Include="Sprites\Projectile.cs" />
+    <Compile Include="Sprites\ScrollingBackgroundSprite.cs" />
     <Compile Include="Sprites\Sprite.cs" />
     <Compile Include="Xaml\CompletedVIew.xaml.cs">
       <DependentUpon>CompletedVIew.xaml</DependentUpon>
@@ -200,6 +202,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\level1.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Level1Bg\level1Image1.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Level1Bg\level1Image2.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Level1Bg\level1Image3.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Properties\AppManifest.xml" />

@@ -18,48 +18,46 @@ namespace CS.KTS.Sprites
     public int HP { get; set; }
     private MoveDirection _lastDirection;
     private Random rand;
+    private int _screenWidth;
+    private const int _distanceFromRightEdge = 500;
+    private const int _distanceFromLeftEdge = 50;
 
-    private int _baseDamage 
-    { 
-      get 
-      {
-        if (CurrentMovement.Type == MovementType.Crouch)
-          return 15;
-        else
-          return 8;
-      } 
-    }
-
-    public int GetDamage()
-    {
-      var fact = rand.Next(50, 200);
-      var damage = (_baseDamage * fact / 100);
-      return damage;
-    }
-
-    private Vector2 _firePosition
-    {
-      get
-      {
-        if (CurrentMovement.Type == MovementType.Crouch)
-        {
-          return new Vector2(Position.X + 90, Position.Y + 55);
-        }
-
-        return new Vector2(Position.X + 90, Position.Y + 40);
-
-      }
-    }
-
-    public Player(string skinAsset, string weaponSkinAsset, int rows, int columns, Vector2 startPoint)
+    public Player(string skinAsset, string weaponSkinAsset, int rows, int columns, Vector2 startPoint, int screenWidth)
       : base(skinAsset, rows, columns)
     {
+      _screenWidth = screenWidth;
       rand = new Random();
       CurrentMovement = new Movement { Direction = MoveDirection.Stop, Type = MovementType.Walking };
       _lastDirection = CurrentMovement.Direction;
       Position = startPoint;
       _projectileAssetName = weaponSkinAsset;
       HP = 100;
+    }
+
+    public ScreenPosition ScreenPosition 
+    { 
+      get 
+      {
+        if (Position.X >= _screenWidth - _distanceFromRightEdge)
+        {
+          return Entities.ScreenPosition.Right;
+        }
+        else if (Position.X <= _distanceFromRightEdge)
+        {
+          return Entities.ScreenPosition.Left;
+        }
+        else 
+        {
+          return Entities.ScreenPosition.Middle;
+        }
+      }
+    } 
+
+    public int GetDamage()
+    {
+      var fact = rand.Next(50, 200);
+      var damage = (_baseDamage * fact / 100);
+      return damage;
     }
 
     public override void LoadContent(Microsoft.Xna.Framework.Content.ContentManager theContentManager)
@@ -131,12 +129,6 @@ namespace CS.KTS.Sprites
       }
     }
 
-    private MoveDirection GetProjectileDirection()
-    {
-      if (_currentFrameIndex == 0 || _currentFrameIndex == 2) return MoveDirection.Right;
-      return MoveDirection.Left;
-    }
-
     public override void Draw(SpriteBatch spriteBatch)
     {
       base.Draw(spriteBatch);
@@ -149,5 +141,60 @@ namespace CS.KTS.Sprites
     }
 
     public Movement CurrentMovement { get; set; }
+
+    public void SetPlayerDirection(InputControlSprite.ButtonEventArgs e)
+    {
+      switch (e.Button)
+      {
+        case InputControlSprite.ButtonType.Left:
+          if (Vector2.Distance(new Vector2(Position.X, 0), new Vector2(0, 0)) > _distanceFromLeftEdge)
+            CurrentMovement.Direction = MoveDirection.Left;
+          else
+            CurrentMovement.Direction = MoveDirection.Stop;
+          break;
+        case InputControlSprite.ButtonType.Right:
+          if (Vector2.Distance(new Vector2(Position.X, 0), new Vector2(_screenWidth, 0)) > _distanceFromRightEdge)
+            CurrentMovement.Direction = MoveDirection.Right;
+          else
+            CurrentMovement.Direction = MoveDirection.Stop;
+          break;
+        case InputControlSprite.ButtonType.None:
+          if (CurrentMovement != null)
+            CurrentMovement.Direction = MoveDirection.Stop;
+          break;
+      }
+    }
+
+    private MoveDirection GetProjectileDirection()
+    {
+      if (_currentFrameIndex == 0 || _currentFrameIndex == 2) return MoveDirection.Right;
+      return MoveDirection.Left;
+    }
+
+    private Vector2 _firePosition
+    {
+      get
+      {
+        if (CurrentMovement.Type == MovementType.Crouch)
+        {
+          return new Vector2(Position.X + 90, Position.Y + 55);
+        }
+
+        return new Vector2(Position.X + 90, Position.Y + 40);
+
+      }
+    }
+
+    private int _baseDamage
+    {
+      get
+      {
+        if (CurrentMovement.Type == MovementType.Crouch)
+          return 15;
+        else
+          return 8;
+      }
+    }
+
   }
 }

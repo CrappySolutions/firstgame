@@ -114,7 +114,8 @@ namespace CS.KTS.Sprites
     internal void SetDead()
     {
       IsDead = true;
-      _currentFrameIndex = 2;
+      if (_currentDirection == MoveDirection.Right) _currentFrameIndex = 2;
+      else if (_currentDirection == MoveDirection.Left) _currentFrameIndex = 3;
       mCurrentState = CharacterState.Dead;
     }
 

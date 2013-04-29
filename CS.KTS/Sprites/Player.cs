@@ -43,10 +43,10 @@ namespace CS.KTS.Sprites
       {
         if (CurrentMovement.Type == MovementType.Crouch)
         {
-          return new Vector2(Position.X + 90, Position.Y + 10);
+          return new Vector2(Position.X + 90, Position.Y + 55);
         }
 
-        return new Vector2(Position.X + 90, Position.Y);
+        return new Vector2(Position.X + 90, Position.Y + 40);
 
       }
     }
@@ -81,7 +81,7 @@ namespace CS.KTS.Sprites
         _lastDirection = CurrentMovement.Direction;
         if (CurrentMovement.Type == MovementType.Crouch)
         {
-          _currentFrameIndex = 2;
+          _currentFrameIndex = 3;
         }
         else
         {
@@ -93,7 +93,7 @@ namespace CS.KTS.Sprites
         _lastDirection = CurrentMovement.Direction;
         if (CurrentMovement.Type == MovementType.Crouch)
         {
-          _currentFrameIndex = 3;
+          _currentFrameIndex = 2;
         }
         else
         {
@@ -104,8 +104,8 @@ namespace CS.KTS.Sprites
       {
         if (CurrentMovement.Type == MovementType.Crouch)
         {
-          if (_lastDirection == MoveDirection.Right) _currentFrameIndex = 3;
-          if (_lastDirection == MoveDirection.Left) _currentFrameIndex = 2;
+          if (_lastDirection == MoveDirection.Right) _currentFrameIndex = 2;
+          if (_lastDirection == MoveDirection.Left) _currentFrameIndex = 3;
         }
         else if (CurrentMovement.Type == MovementType.Walking)
         {
@@ -133,7 +133,7 @@ namespace CS.KTS.Sprites
 
     private MoveDirection GetProjectileDirection()
     {
-      if (_currentFrameIndex == 0 || _currentFrameIndex == 3) return MoveDirection.Right;
+      if (_currentFrameIndex == 0 || _currentFrameIndex == 2) return MoveDirection.Right;
       return MoveDirection.Left;
     }
 

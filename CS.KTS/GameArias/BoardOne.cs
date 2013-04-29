@@ -87,7 +87,7 @@ namespace CS.KTS
       _background.AddBackground("level1Test");
       _background.LoadContent(this.Content);
 
-      _player = new Player("player2", "bullit", 1, 4, new Vector2(500, 500));
+      _player = new Player("playerChar", "bullit", 1, 4, new Vector2(500, 470));
       _player.LoadContent(Content);
     }
 
@@ -220,7 +220,7 @@ namespace CS.KTS
       for (int i = 0; i < count; i++)
       {
         var startX = rand.Next(100, maxWidth);
-        var walker = new EnemyWalker(_graphics, "walker", 1, 3, new Vector2(startX, 500));
+        var walker = new EnemyWalker(_graphics, "nisse2", 1, 4, new Vector2(startX, 500));
         walker.LoadContent(Content);
         _walkers.Add(walker);
       }

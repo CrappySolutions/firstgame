@@ -19,18 +19,19 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
-        <!--TitlePanel contains the name of the application and page title-->
+    <Image Source="/Assets/level1.png" Grid.RowSpan="2"/>
+      
+    <!--TitlePanel contains the name of the application and page title-->
         <StackPanel Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="Crappy solutions presents" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock Text="Kill the santa" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock Text="Crappy solutions" Style="{StaticResource PhoneTextNormalStyle}"/>
+      <TextBlock Text="SANTA, I'M COMING FOR YOU" Margin="9,0,0,0" FontSize="48" FontWeight="Bold"/>
         </StackPanel>
     <!--ContentPanel - place additional content here-->
-    <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-      <Button x:Name="BtnNewGame" Content="New game" Click="BtnNewGame_Click"/>
-      <Button x:Name="BtnLoadGame" Content="Load game" Click="BtnLoadGame_Click" IsEnabled="False"/>
-      <Button x:Name="BtnSaveGame" Content="Save game" Click="BtnSaveGame_Click" IsEnabled="False"/>
-      <Button x:Name="BtnExit" Content="Exit" Click="BtnExit_Click"/>
+    <StackPanel HorizontalAlignment="Right" x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+      <Button x:Name="BtnNewGame" Content="NEW GAME" Click="BtnNewGame_Click"/>
+      <Button x:Name="BtnLoadGame" Content="LOAD GAME" Click="BtnLoadGame_Click" IsEnabled="False" />
+      <Button x:Name="BtnSaveGame" Content="SAVE GAME" Click="BtnSaveGame_Click" IsEnabled="False" />
+      <Button x:Name="BtnExit" Content="EXIT" Click="BtnExit_Click" />
     </StackPanel>
     </Grid>
 

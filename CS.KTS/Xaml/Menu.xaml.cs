@@ -34,7 +34,7 @@ namespace CS.KTS.Xaml
 
     private void BtnExit_Click(object sender, RoutedEventArgs e)
     {
-
+      Application.Current.Terminate();
     }
 
 

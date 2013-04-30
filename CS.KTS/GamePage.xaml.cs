@@ -39,33 +39,44 @@ namespace CS.KTS
 
 
       App.GameBoard = XamlGame<BoardOne>.Create("", XnaSurface);
-      App.GameBoard.HPWriter = (a) =>
+      App.GameBoard.GuiMessageWriter = (a) =>
       {
         Dispatcher.BeginInvoke(() =>
           {
-            switch (a.MessageType)
+            foreach (var message in a)
             {
-              case MessageType.PlayerDamageDone:
-                PlayerDamageDone.Visibility = System.Windows.Visibility.Visible;
-                PlayerDamageDone.Text = a.Text;
-                var top = GetPoint(a.Y - 50);
-                var left = GetPoint(a.X + 50);
-                Canvas.SetTop(PlayerDamageDone, top);
-                Canvas.SetLeft(PlayerDamageDone, left);
-                break;
-              case MessageType.TargetHp:
-                break;
-              case MessageType.PlayerHp:
-                PlayerHp.Text = a.Text;
-                break;
-              case MessageType.PlayerExp:
-                break;
-              case MessageType.PlayerLevel:
-                break;
-              default:
-                break;
-            }
+              switch (message.MessageType)
+              {
+                case MessageType.PlayerDamageDone:
+                  SetFloatingCombatText(message);
+                  break;
+                //case MessageType.TargetHp:
+                //  break;
+                //case MessageType.PlayerHp:
+                //  tbPlayerHp.Text = message.Text;
+                //  break;
+                //case MessageType.PlayerExp:
+                //  tbPlayerXp.Text = message.Text;
+                //  break;
+                //case MessageType.PlayerLevel:
+                //  tbPlayerLevel.Text = message.Text;
+                //  break;
+                //case MessageType.PlayerHpPercent:
+                //  //var hpPercent = double.Parse(message.Text);
+                //  //pbPlayerHp.Value = hpPercent;
+                //  break;
+                //case MessageType.PlayerXpPercent:
+                //  //var xpPercent = double.Parse(message.Text);
+                //  //pbPlayerXp.Value = xpPercent;
+                //  break;
+                //case MessageType.InitPlayerMaxHp:
+                //  pbPlayerHp.Maximum = message.Number;
+                //  break;
+                //default:
+                //  break;
+              }
 
+            }
 
           });
       };
@@ -82,6 +93,17 @@ namespace CS.KTS
 
 
     }
+
+    private void SetFloatingCombatText(Message message)
+    {
+      PlayerDamageDone.Visibility = System.Windows.Visibility.Visible;
+      PlayerDamageDone.Text = message.Text;
+      var top = GetPoint(message.Y - 50);
+      var left = GetPoint(message.X + 50);
+      Canvas.SetTop(PlayerDamageDone, top);
+      Canvas.SetLeft(PlayerDamageDone, left);
+    }
+
 
     private int GetPoint(int pixel)
     {

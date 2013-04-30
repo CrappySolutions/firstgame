@@ -15,49 +15,27 @@ namespace CS.KTS.Sprites
     private string _projectileAssetName;
     private Microsoft.Xna.Framework.Content.ContentManager _contentManager;
     public bool SendProjectile { get; set; }
-    public int HP { get; set; }
     private MoveDirection _lastDirection;
     private Random rand;
     private int _screenWidth;
     private const int _distanceFromRightEdge = 500;
     private const int _distanceFromLeftEdge = 50;
+    private bool _isDead;
 
-    public Player(string skinAsset, string weaponSkinAsset, int rows, int columns, Vector2 startPoint, int screenWidth)
+    private TimeSpan? _lastProjectileTime;
+
+    public Data.PlayerData Data { get; private set; }
+
+    public Player(string skinAsset, string weaponSkinAsset, int rows, int columns, Vector2 startPoint, int screenWidth, Data.PlayerData data)
       : base(skinAsset, rows, columns)
     {
+      Data = data;
       _screenWidth = screenWidth;
       rand = new Random();
       CurrentMovement = new Movement { Direction = MoveDirection.Stop, Type = MovementType.Walking };
       _lastDirection = CurrentMovement.Direction;
       Position = startPoint;
       _projectileAssetName = weaponSkinAsset;
-      HP = 100;
-    }
-
-    public ScreenPosition ScreenPosition 
-    { 
-      get 
-      {
-        if (Position.X >= _screenWidth - _distanceFromRightEdge)
-        {
-          return Entities.ScreenPosition.Right;
-        }
-        else if (Position.X <= _distanceFromRightEdge)
-        {
-          return Entities.ScreenPosition.Left;
-        }
-        else 
-        {
-          return Entities.ScreenPosition.Middle;
-        }
-      }
-    } 
-
-    public int GetDamage()
-    {
-      var fact = rand.Next(50, 200);
-      var damage = (_baseDamage * fact / 100);
-      return damage;
     }
 
     public override void LoadContent(Microsoft.Xna.Framework.Content.ContentManager theContentManager)
@@ -72,7 +50,7 @@ namespace CS.KTS.Sprites
       }
     }
 
-    public void Update(GameTime theGameTime)
+    public void Update(GameTime gameTime)
     {
       if (CurrentMovement.Direction == MoveDirection.Left)
       {
@@ -113,19 +91,20 @@ namespace CS.KTS.Sprites
       }
 
       UpdateMovement(CurrentMovement);
-      base.Update(theGameTime, mSpeed, mDirection);
+      base.Update(gameTime, mSpeed, mDirection);
 
-      if (SendProjectile)
+      if (SendProjectile && CanFire(gameTime))
       {
         SendProjectile = false;
         var projectile = new Projectile(_contentManager.Load<Texture2D>(_projectileAssetName), 1, 2);
         projectile.Fire(_firePosition, new Vector2(500, 0), new Vector2(1, 0), GetProjectileDirection());
         Projectiles.Add(projectile);
+        _lastProjectileTime = gameTime.TotalGameTime;
       }
 
       foreach (var projectile in Projectiles)
       {
-        projectile.Update(theGameTime, CurrentMovement);
+        projectile.Update(gameTime, CurrentMovement);
       }
     }
 
@@ -138,6 +117,45 @@ namespace CS.KTS.Sprites
         proj.Draw(spriteBatch);
       }
       spriteBatch.End();
+    }
+
+    public void Hit(int damage)
+    {
+      Data.CurrentHP = -damage;
+      if (Data.CurrentHP <= 0) _isDead = true;
+    }
+
+    public bool IsDead { get { return _isDead; } }
+
+    public void UpdateXp(int exp)
+    {
+      Data.CurrentXP += exp;
+    }
+
+    public ScreenPosition ScreenPosition
+    {
+      get
+      {
+        if (Position.X >= _screenWidth - _distanceFromRightEdge)
+        {
+          return Entities.ScreenPosition.Right;
+        }
+        else if (Position.X <= _distanceFromRightEdge)
+        {
+          return Entities.ScreenPosition.Left;
+        }
+        else
+        {
+          return Entities.ScreenPosition.Middle;
+        }
+      }
+    }
+
+    public int GetWeaponDamage()
+    {
+      var fact = rand.Next(50, 200);
+      var damage = (_baseDamage * fact / 100);
+      return damage;
     }
 
     public Movement CurrentMovement { get; set; }
@@ -196,5 +214,13 @@ namespace CS.KTS.Sprites
       }
     }
 
+    private bool CanFire(GameTime gameTime)
+    {
+      if (!_lastProjectileTime.HasValue) return true;
+      if ((gameTime.TotalGameTime - _lastProjectileTime.Value).Milliseconds > 200) return true;
+
+      return false;
+
+    }
   }
 }

@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 
 namespace CS.KTS.Data
 {
-  public class Enemy : Character
+  public class EnemyData : Character
   {
-    public double Damage { get; set; }
+    public int Damage { get; set; }
 
-    public double HP { get; set; }
+    public int MaxHp { get; set; }
 
-    public double XPValue { get; set; }
+    public int CurrentHp { get; set; }
+
+    public int XPValue { get; set; }
 
     public double GoldValue { get; set; }
 

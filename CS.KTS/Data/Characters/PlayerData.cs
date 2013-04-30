@@ -6,13 +6,17 @@ using System.Threading.Tasks;
 
 namespace CS.KTS.Data
 {
-  public class Player : Character
+  public class PlayerData : Character
   {
-    public double HP { get; set; }
+    public int MaxHp { get; set; }
 
-    public double XP { get; set; }
+    public int CurrentHP { get; set; }
+
+    public double CurrentXP { get; set; }
 
     public Level CurrentLevel { get; set; }
+
+    public int PlayerLevel { get; set; }
 
     public double Purse { get; set; }
 
@@ -31,6 +35,24 @@ namespace CS.KTS.Data
     public int MainShieldId { get; set; }
 
     public int SecondaryWeaponId { get; set; }
+
+    public double HpPercent
+    {
+      get
+      {
+        return CurrentHP / MaxHp;
+      }
+    }
+
+    public double XpPercent
+    {
+      get
+      {
+        if (CurrentXP <= 0) return 0;
+        if (PlayerLevel <= 0) return 0;
+        return Math.Round(CurrentXP / PlayerLevel * 100);
+      }
+    }
 
   }
 }

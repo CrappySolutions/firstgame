@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CS.KTS.Data
 {
-  public class Boss : Enemy
+  public class Boss : EnemyData
   {
     public List<Artifact> Artifacts { get; set; }
 

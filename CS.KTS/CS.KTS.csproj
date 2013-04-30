@@ -77,8 +77,8 @@
     <Compile Include="Data\Background\World.cs" />
     <Compile Include="Data\Characters\Boss.cs" />
     <Compile Include="Data\Characters\Character.cs" />
-    <Compile Include="Data\Characters\Enemy.cs" />
-    <Compile Include="Data\Characters\Player.cs" />
+    <Compile Include="Data\Characters\EnemyData.cs" />
+    <Compile Include="Data\Characters\PlayerData.cs" />
     <Compile Include="Data\GamePlay\Level.cs" />
     <Compile Include="Data\Objects\Artifact.cs" />
     <Compile Include="Data\Objects\Shield.cs" />

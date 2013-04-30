@@ -10,6 +10,8 @@ namespace CS.KTS.Entities
   {
     public string Text { get; set; }
 
+    public double Number { get; set; }
+
     public int X { get; set; }
 
     public int Y { get; set; }
@@ -24,6 +26,10 @@ namespace CS.KTS.Entities
     TargetHp,
     PlayerHp,
     PlayerExp,
-    PlayerLevel
+    PlayerLevel,
+    PlayerXpPercent,
+    PlayerHpPercent,
+    InitPlayerMaxHp,
+    InitPlayerMaxXp
   }
 }

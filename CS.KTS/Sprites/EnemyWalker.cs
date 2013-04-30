@@ -20,15 +20,13 @@ namespace CS.KTS.Sprites
     private TimeSpan? _deadTime;
     private HpBarSprite _hpBar;
 
-    public int Hp { get; set; }
-    private int _startHp;
+    public Data.EnemyData Data { get; private set; }
 
-    public EnemyWalker(GraphicsDeviceManager aGraphicsManager, string skinAsset, int rows, int columns, Vector2? startLocation = null)
+    public EnemyWalker(GraphicsDeviceManager aGraphicsManager, string skinAsset, int rows, int columns, Data.EnemyData enemyData, Vector2? startLocation = null)
       : base(skinAsset, rows, columns)
     {
-      _hpBar = new HpBarSprite(aGraphicsManager,"hpBar",1,3,startLocation);
-      Hp = 100;
-      _startHp = 100;
+      Data = enemyData;
+      _hpBar = new HpBarSprite(aGraphicsManager, "hpBar", 1, 3, startLocation);
       _graphicsManager = aGraphicsManager;
       _minX = 0;
       _maxX = _graphicsManager.GraphicsDevice.Viewport.Height - 80;
@@ -47,7 +45,7 @@ namespace CS.KTS.Sprites
 
     public void Update(GameTime gameTime)
     {
-      
+
       if (mCurrentState == CharacterState.Walking)
       {
         var movement = new Movement { Direction = _currentDirection, Type = MovementType.Walking };
@@ -69,7 +67,7 @@ namespace CS.KTS.Sprites
           }
         }
         UpdateMovement(movement);
-        _hpBar.UpdateFrameIndex(Position, _startHp, Hp);
+        _hpBar.UpdateFrameIndex(Position, Data.MaxHp, Data.CurrentHp);
         _hpBar.Update(gameTime, mSpeed, mDirection);
         base.Update(gameTime, mSpeed, mDirection);
       }
@@ -82,7 +80,7 @@ namespace CS.KTS.Sprites
             DoRemove = true;
           }
         }
-        else 
+        else
         {
           _deadTime = gameTime.TotalGameTime;
         }
@@ -121,9 +119,9 @@ namespace CS.KTS.Sprites
 
     public void IsHit(int damage)
     {
-      Hp -= damage;
+      Data.CurrentHp -= damage;
 
-      if (Hp <= 0) SetDead();
+      if (Data.CurrentHp <= 0) SetDead();
     }
   }
 }

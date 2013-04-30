@@ -33,16 +33,29 @@
     <!--ContentPanel - place additional content here-->
     <Grid x:Name="ContentPanel" Grid.Row="1" Margin="200,0,200,0" >
 
+      <Grid VerticalAlignment="Bottom" Margin="0,0,0,65">
+        <ProgressBar x:Name="pbPlayerHp" Minimum="0" Maximum="1" Value="0" Foreground="Green" />
+      </Grid>
+
+      <!--<Grid VerticalAlignment="Bottom" Margin="0,0,0,35">
+        <ProgressBar x:Name="pbPlayerXp" Minimum="0" Maximum="1" Value="0" Foreground="#197909FF" />
+      </Grid>
+
       <StackPanel VerticalAlignment="Bottom" >
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
           <TextBlock Text="Life: " Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-          <TextBlock x:Name="PlayerHp" Text="100" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+          <TextBlock x:Name="tbPlayerHp" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+          <TextBlock Text="Exp: " Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+          <TextBlock x:Name="tbPlayerXp" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
           <TextBlock Text="Level: " Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-          <TextBlock x:Name="PlayerLevel" Text="0" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+          <TextBlock x:Name="tbPlayerLevel" Text="0" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
         </StackPanel>
-      </StackPanel>
+      </StackPanel>-->
+      
     </Grid>
 
     <!--Uncomment to see an alignment grid to help ensure your controls are

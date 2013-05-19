@@ -19,11 +19,13 @@ namespace CS.KTS.Data
 
     #region Public props
 
-    public PlayerData()
+    public PlayerData(CharacterClass characterClass, string name)
     {
       _rand = new Random();
       _dpsStats = new List<DpsStats>();
       _lastGameTime = new TimeSpan();
+      CharacterClass = characterClass;
+      Name = name;
 
       InitNewPlayer();
     }
@@ -98,7 +100,7 @@ namespace CS.KTS.Data
 
     public List<Ability> Abilities { get; set; }
 
-    public CharacterClass Class { get; set; }
+    public CharacterClass CharacterClass { get; set; }
 
     #endregion
 
@@ -334,7 +336,7 @@ namespace CS.KTS.Data
       Weapons = CreateBasicWeapons();
       EquipedWeapon = Weapons.First();
 
-      switch (Class)
+      switch (CharacterClass)
       {
         case CharacterClass.Wizard:
           CurrentHP = 120;
@@ -359,7 +361,7 @@ namespace CS.KTS.Data
     private List<Weapon> CreateBasicWeapons()
     {
       var weapons = new List<Weapon>();
-      switch (Class)
+      switch (CharacterClass)
       {
         case CharacterClass.Wizard:
           weapons.Add(new Weapon()

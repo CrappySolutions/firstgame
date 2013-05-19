@@ -27,11 +27,11 @@ namespace CS.KTS.Xaml
     {
       if (panorama.SelectedIndex == 0)
       {
-        App.PlayerData = new Data.PlayerData { Name = PlayerName.Text, Class = CharacterClass.Warrior };
+        App.PlayerData = new Data.PlayerData(CharacterClass.Wizard, PlayerName.Text);
       }
       else if (panorama.SelectedIndex == 1)
       {
-        App.PlayerData = new Data.PlayerData { Name = PlayerName.Text, Class = CharacterClass.Hunter };
+        App.PlayerData = new Data.PlayerData(CharacterClass.Hunter, PlayerName.Text);
       }
       
       NavigationService.Navigate(new Uri("/GamePage.xaml", UriKind.Relative));

@@ -395,5 +395,24 @@ namespace CS.KTS
       }
     }
 
+    private void Map_Tap(object sender, System.Windows.Input.GestureEventArgs e)
+    {
+      App.GameBoard.PauseGame();
+      mapGrid.Visibility = System.Windows.Visibility.Visible;
+    }
+
+    private void MapBtnClose_Click(object sender, RoutedEventArgs e)
+    {
+      App.GameBoard.UnPauseGame();
+      mapGrid.Visibility = System.Windows.Visibility.Collapsed;
+    }
+
+    private void MapButton_Click(object sender, RoutedEventArgs e)
+    {
+      
+    }
+
+    
+
   }
 }

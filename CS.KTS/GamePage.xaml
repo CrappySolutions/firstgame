@@ -189,6 +189,10 @@
             <TextBlock x:Name="tbMaxDamage"/>
           </StackPanel>
           <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Max healing: "/>
+            <TextBlock x:Name="tbMaxHealing"/>
+          </StackPanel>
+          <StackPanel Orientation="Horizontal">
             <TextBlock Text="Max dps: "/>
             <TextBlock x:Name="tbMaxDps"/>
           </StackPanel>
@@ -221,7 +225,7 @@
       </StackPanel>
     </Grid>
 
-    <Grid x:Name="mapGrid">
+    <Grid x:Name="mapGrid" Visibility="Collapsed">
       <Image Source="/Assets/gameMap.png" Stretch="UniformToFill" />
 
       <Button Height="72" Width="170" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="0,0,0,10" Background="Black" Content="Close" Click="MapBtnClose_Click"/>

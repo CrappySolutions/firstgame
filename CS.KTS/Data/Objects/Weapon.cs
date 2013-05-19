@@ -9,6 +9,13 @@ namespace CS.KTS.Data
 {
   public class Weapon : Artifact
   {
+    private Random _rand;
+
+    public Weapon()
+    {
+      _rand = new Random();
+    }
+
     public int MaxDamage { get; set; }
 
     public int MinDamage { get; set; }
@@ -22,5 +29,10 @@ namespace CS.KTS.Data
     public int CastTime { get; set; }
 
     public ProjectileEffect Effect { get; set; }
+
+    public int GetWeaponDamage()
+    {
+      return _rand.Next(MinDamage, MaxDamage);
+    }
   }
 }

@@ -157,12 +157,13 @@ namespace CS.KTS
             tbWeaponDamage.Text = stats.EquipedWeapon.MinDamage.ToString() + " - " + stats.EquipedWeapon.MaxDamage;
             var fireRate = Math.Round((double)(1000 / stats.EquipedWeapon.FireRate), 0);
             tbWeaponFireRate.Text = fireRate.ToString() + "/s";
-            tbMaxDamage.Text = stats.MaxDamage.ToString();
+            tbMaxDamage.Text = stats.MaxPlayerDamage.ToString();
             tbMaxDps.Text = stats.MaxDps.ToString();
             tbEnemiesKilled.Text = stats.Killedenemies.ToString();
             tbWeaponRange.Text = stats.EquipedWeapon.Distance.ToString();
             tbSkillPoints.Text = stats.UnspentSkillPoints.ToString();
             tbHealing.Text = stats.Healing.ToString();
+            tbMaxHealing.Text = stats.MaxPlayerHealing.ToString();
 
             CharacterScreen.Visibility = System.Windows.Visibility.Visible;
             gridPlayer.Visibility = System.Windows.Visibility.Visible;

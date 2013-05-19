@@ -86,7 +86,9 @@ namespace CS.KTS.Data
       }
     }
 
-    public int MaxDamage { get; set; }
+    public int MaxPlayerDamage { get; set; }
+
+    public int MaxPlayerHealing { get; set; }
 
     public int MaxDps { get; set; }
 
@@ -108,14 +110,14 @@ namespace CS.KTS.Data
 
     public WeaponDamage GetWeaponDamage()
     {
-      var weaponDamage = _rand.Next(EquipedWeapon.MinDamage, EquipedWeapon.MaxDamage);
+      var weaponDamage = EquipedWeapon.GetWeaponDamage();
       var damage = Convert.ToInt32((1 + (double)Accuracy / 10) * weaponDamage);
       var isCritical = IsCritical();
       if (isCritical)
       {
         damage += damage;
       }
-      if (MaxDamage < damage) MaxDamage = damage;
+      if (MaxPlayerDamage < damage) MaxPlayerDamage = damage;
       return new WeaponDamage { Damage = damage, IsCritical = isCritical };
     }
 
@@ -189,9 +191,7 @@ namespace CS.KTS.Data
       if (abilityToUse == null) return new AbilityResponse { CouldUse = false };
       var abilityRespnse = abilityToUse.Use(gameTime);
 
-      ApplyAbility(abilityType, abilityRespnse);
-
-      return abilityRespnse;
+      return ApplyAbility(abilityType, abilityRespnse);
     }
 
     public void UpdateCooldowns(TimeSpan totalGameTime)
@@ -261,35 +261,48 @@ namespace CS.KTS.Data
 
     #region Private Methods
 
-    private void ApplyAbility(AbilityType abilityType, AbilityResponse abilityResponse)
+    private AbilityResponse ApplyAbility(AbilityType abilityType, AbilityResponse abilityResponse)
     {
-      if (!abilityResponse.CouldUse) return;
+      if (!abilityResponse.CouldUse) new AbilityResponse { CouldUse = false };
       switch (abilityType)
       {
         case AbilityType.Healing:
-          var newHp = CurrentHP + abilityResponse.Power;
+          var healing = Convert.ToInt32((1 + (double)Healing / 10) * abilityResponse.Power);
+          if (healing > MaxPlayerHealing) MaxPlayerHealing = healing;
+          var newHp = CurrentHP + healing;
           if (newHp > MaxHp) CurrentHP = MaxHp;
           else CurrentHP = newHp;
+          return new AbilityResponse { CouldUse = true, Power = healing };
           break;
         case AbilityType.Stun:
+          new AbilityResponse { CouldUse = false };
           break;
         case AbilityType.AoeStun:
+          new AbilityResponse { CouldUse = false };
           break;
         case AbilityType.DamageBoost:
+          new AbilityResponse { CouldUse = false };
           break;
         case AbilityType.HealingBoost:
+          new AbilityResponse { CouldUse = false };
           break;
         case AbilityType.DefenceBoost:
+          new AbilityResponse { CouldUse = false };
           break;
         case AbilityType.Damage:
+          new AbilityResponse { CouldUse = false };
           break;
         case AbilityType.AoeDamage:
+          new AbilityResponse { CouldUse = false };
           break;
         case AbilityType.Beem:
+          new AbilityResponse { CouldUse = false };
           break;
         default:
+          new AbilityResponse { CouldUse = false };
           break;
       }
+      return new AbilityResponse { CouldUse = false };
     }
 
     private int DamageReduction(int damage)

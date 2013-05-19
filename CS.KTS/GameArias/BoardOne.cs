@@ -437,26 +437,15 @@ namespace CS.KTS
     {
       foreach (var projectile in _player.Projectiles)
       {
-        if (projectile.IsUsed) continue;
         foreach (var walker in _walkers)
         {
+          if (projectile.IsUsed) continue;
           if (walker.IsColliding(projectile) && !walker.IsDead)
           {
-            projectile.IsUsed = true;
+            if (projectile.IsUsed) continue;
+            projectile.SetHit(walker);
             var playerDamage = _player.Data.GetWeaponDamage();
-
-            if (projectile.Data.Effect == ProjectileEffect.Burn)
-            {
-              playerDamage.Damage *= 3;
-            }
-
-            walker.IsHit(playerDamage.Damage);
-
-            if (projectile.Data.Effect == ProjectileEffect.Slow)
-            {
-              walker.Data.ChangeSpeed(walker.Data.Speed / 2);
-            }
-
+            walker.IsHit(playerDamage.Damage, projectile.Data.Effect);
             _player.Data.AddDpsStats(playerDamage.Damage, _currentGameTime);
 
             if (walker.IsDead)
@@ -473,8 +462,6 @@ namespace CS.KTS
             var targetHpMessage = new Message { Text = walker.Data.CurrentHp.ToString(), MessageType = MessageType.TargetHp };
             _guiMessages.Add(playerDamageDoneMessage);
             _guiMessages.Add(targetHpMessage);
-
-            projectile.SetHit(walker);
           }
         }
       }

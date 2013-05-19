@@ -79,7 +79,7 @@
     <Compile Include="Data\Characters\Character.cs" />
     <Compile Include="Data\Characters\EnemyData.cs" />
     <Compile Include="Data\Characters\PlayerData.cs" />
-    <Compile Include="Data\GamePlay\Level.cs" />
+    <Compile Include="Data\GamePlay\Instance.cs" />
     <Compile Include="Data\Objects\Ability.cs" />
     <Compile Include="Data\Objects\Artifact.cs" />
     <Compile Include="Data\Objects\LootData.cs" />

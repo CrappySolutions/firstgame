@@ -36,7 +36,7 @@ namespace CS.KTS.Data
 
     public Exp Exp { get; set; }
 
-    public Level CurrentLevel { get; set; }
+    public Instance CurrentLevel { get; set; }
 
     public int PlayerLevel { get; set; }
 
@@ -316,7 +316,7 @@ namespace CS.KTS.Data
     private void InitNewPlayer()
     {
       CriticalChance = 0.1;
-      CurrentLevel = new Data.Level();
+      CurrentLevel = new Data.Instance();
       PlayerLevel = 1;
       Id = 1;
       IsGood = true;

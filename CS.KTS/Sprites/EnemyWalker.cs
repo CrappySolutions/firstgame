@@ -19,6 +19,7 @@ namespace CS.KTS.Sprites
     private MoveDirection _currentDirection;
     private TimeSpan? _deadTime;
     private HpBarSprite _hpBar;
+    private bool _isDebuffed;
 
     public Data.EnemyData Data { get; private set; }
 
@@ -138,11 +139,34 @@ namespace CS.KTS.Sprites
       mCurrentState = CharacterState.Dead;
     }
 
-    public void IsHit(int damage)
+    public void IsHit(int damage, ProjectileEffect projectileEffect)
     {
+      ApplyProjectileEffect(projectileEffect);
       Data.CurrentHp -= damage;
-
       if (Data.CurrentHp <= 0) SetDead();
+    }
+
+    private void ApplyProjectileEffect(ProjectileEffect projectileEffect)
+    {
+      switch (projectileEffect)
+      {
+        case ProjectileEffect.Slow:
+          Data.Speed /= 2;
+          _isDebuffed = true;
+          break;
+        case ProjectileEffect.AoeSlow:
+          break;
+        case ProjectileEffect.Heal:
+          break;
+        case ProjectileEffect.Burn:
+          break;
+        case ProjectileEffect.Explode:
+          break;
+        case ProjectileEffect.None:
+          break;
+        default:
+          break;
+      }
     }
   }
 }

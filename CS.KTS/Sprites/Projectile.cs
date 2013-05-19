@@ -82,7 +82,7 @@ namespace CS.KTS.Sprites
       {
         mSpeed.X = 0;
         if (_direction == MoveDirection.Left)
-        { 
+        {
           int width = SpriteTexture.Width / Columns;
           if (playerDirection == MoveDirection.Right)
             Position = new Vector2(theStartPosition.X - 80, theStartPosition.Y);
@@ -97,11 +97,27 @@ namespace CS.KTS.Sprites
 
     internal void SetHit(EnemyWalker hitWalker)
     {
-      if (Data.Effect == ProjectileEffect.Burn) return;
-      var projectileHitPos = hitWalker.Position.X + (hitWalker.Size.Width / 2) - 45;
-      Position = new Vector2(projectileHitPos, Position.Y);
-      DoRemove = true;
-      _currentFrameIndex = 1;
+      switch (Data.Effect)
+      {
+        case ProjectileEffect.AoeSlow:
+          break;
+        case ProjectileEffect.Heal:
+          break;
+        case ProjectileEffect.Burn:
+          break;
+        case ProjectileEffect.Explode:
+          break;
+        case ProjectileEffect.Slow:
+        case ProjectileEffect.None:
+          var projectileHitPos = hitWalker.Position.X + (hitWalker.Size.Width / 2) - 45;
+          Position = new Vector2(projectileHitPos, Position.Y);
+          DoRemove = true;
+          IsUsed = true;
+          _currentFrameIndex = 1;
+          break;
+        default:
+          break;
+      }
     }
   }
 }

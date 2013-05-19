@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CS.KTS.Data
 {
-  public class Level
+  public class Instance
   {
     public int Id { get; set; }
 

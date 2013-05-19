@@ -34,8 +34,7 @@ namespace CS.KTS.Xaml
         App.PlayerData = new Data.PlayerData(CharacterClass.Hunter, PlayerName.Text);
       }
       
-      NavigationService.Navigate(new Uri("/GamePage.xaml", UriKind.Relative));
-      
+      NavigationService.Navigate(new Uri("/Xaml/MapView.xaml", UriKind.Relative));
     }
   }
 }

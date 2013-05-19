@@ -57,7 +57,7 @@
       <!--Panorama item two-->
       <phone:PanoramaItem>
         <phone:PanoramaItem.Header>
-          <TextBlock Text="Soldier" FontSize="40"/>
+          <TextBlock Text="Hunter" FontSize="40"/>
         </phone:PanoramaItem.Header>
         <Grid>
           <Grid.ColumnDefinitions>

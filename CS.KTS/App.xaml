@@ -8,7 +8,13 @@
     <!--Application Resources-->
     <Application.Resources>
         <local:LocalizedStrings xmlns:local="clr-namespace:CS.KTS" x:Key="LocalizedStrings"/>
-    </Application.Resources>
+
+    <Style x:Key="GuiTextblockStyle" TargetType="TextBlock">
+      <Setter Property="FontSize" Value="14" />
+      <Setter Property="Foreground" Value="#FFD4C319"/>
+    </Style>
+
+  </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>
         <!--Required object that handles lifetime events for the application-->

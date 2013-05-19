@@ -6,14 +6,16 @@ using System.Threading.Tasks;
 
 namespace CS.KTS.Entities
 {
-  public enum MoveDirection
+  public enum AbilityType
   {
-    Stop,
-    Left,
-    Right,
-    Up,
-    Down,
-    CrouchLeft,
-    CrouchRight
+    Healing,
+    Stun,
+    AoeStun,
+    DamageBoost,
+    HealingBoost,
+    DefenceBoost,
+    Damage,
+    AoeDamage,
+    Beem
   }
 }

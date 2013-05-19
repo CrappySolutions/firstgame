@@ -6,14 +6,10 @@ using System.Threading.Tasks;
 
 namespace CS.KTS.Entities
 {
-  public enum MoveDirection
+  public class WeaponDamage
   {
-    Stop,
-    Left,
-    Right,
-    Up,
-    Down,
-    CrouchLeft,
-    CrouchRight
+    public int Damage { get; set; }
+
+    public bool IsCritical { get; set; }
   }
 }

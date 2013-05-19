@@ -1,0 +1,107 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="CS.KTS.Xaml.CreateNewCharacterView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Landscape"  Orientation="Landscape"
+    shell:SystemTray.IsVisible="False">
+
+  <!--LayoutRoot contains the root grid where all other page content is placed-->
+  <Grid x:Name="LayoutRoot">
+    <Grid.RowDefinitions>
+      <RowDefinition />
+      <RowDefinition Height="80"/>
+    </Grid.RowDefinitions>
+
+    <phone:Panorama x:Name="panorama">
+      <phone:Panorama.Title>
+        <TextBlock Text="Select character" FontSize="30" Margin="10,30"/>
+      </phone:Panorama.Title>
+
+      <!--Panorama item one-->
+      <phone:PanoramaItem>
+        <phone:PanoramaItem.Header>
+          <TextBlock Text="Wizard" FontSize="40"/>
+        </phone:PanoramaItem.Header>
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition />
+            <ColumnDefinition Width="220"/>
+          </Grid.ColumnDefinitions>
+
+          <Image Source="/Assets/level1.png" Stretch="UniformToFill" Margin="3"/>
+
+          <StackPanel Grid.Column="1" Margin="5">
+            <TextBlock Text="Description:"/>
+            <TextBlock Text="Wizards are renegade spellcasters who use their bodies as vessels for arcane energy, forsaking the more careful path favored by other magic users. They manipulate all manner of forces to disintegrate, burn, and freeze their foes, and they can control time and light to teleport, create powerful illusions, and deflect oncoming attacks" TextWrapping="Wrap"/>
+          </StackPanel>
+
+          <StackPanel Grid.Column="2" Margin="5">
+            <TextBlock Text="+ aoe damage"/>
+            <TextBlock Text="+ healing"/>
+            <TextBlock />
+            <TextBlock Text="- health"/>
+            <TextBlock Text="- defense"/>
+          </StackPanel>
+        </Grid>
+      </phone:PanoramaItem>
+
+      <!--Panorama item two-->
+      <phone:PanoramaItem>
+        <phone:PanoramaItem.Header>
+          <TextBlock Text="Soldier" FontSize="40"/>
+        </phone:PanoramaItem.Header>
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition />
+            <ColumnDefinition Width="200"/>
+          </Grid.ColumnDefinitions>
+
+          <Image Source="/Assets/level1.png" Stretch="UniformToFill" Margin="3"/>
+
+          <StackPanel Grid.Column="1" Margin="5">
+            <TextBlock Text="Description:"/>
+            <TextBlock Text="Wizards are renegade spellcasters who use their bodies as vessels for arcane energy, forsaking the more careful path favored by other magic users. They manipulate all manner of forces to disintegrate, burn, and freeze their foes, and they can control time and light to teleport, create powerful illusions, and deflect oncoming attacks" TextWrapping="Wrap"/>
+          </StackPanel>
+
+          <StackPanel Grid.Column="2" Margin="5">
+            <TextBlock Text="+ single target damage"/>
+            <TextBlock Text="+ defense"/>
+            <TextBlock />
+            <TextBlock Text="- movement"/>
+            <TextBlock Text="- armor"/>
+          </StackPanel>
+        </Grid>
+      </phone:PanoramaItem>
+
+    </phone:Panorama>
+
+    <Grid Grid.Row="1" Margin="0,10,0,0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition  />
+        <ColumnDefinition Width="500" />
+        <ColumnDefinition  />
+      </Grid.ColumnDefinitions>
+
+      <Button Grid.Column="0" Content="Back" Width="130" HorizontalAlignment="Left" Click="BtnBack_Click" />
+      <Button Grid.Column="2" Content="Next" Width="130" HorizontalAlignment="Right" Click="BtnNext_Click" IsEnabled="{Binding ElementName=PlayerName,Path=Text.Length}"/>
+      <StackPanel Orientation="Horizontal" Grid.Column="1">
+        <TextBlock Text="Enter name" VerticalAlignment="Center"/>
+        <TextBox x:Name="PlayerName" Width="400"/>
+      </StackPanel>
+    </Grid>
+
+
+
+  </Grid>
+
+</phone:PhoneApplicationPage>

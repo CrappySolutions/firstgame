@@ -6,14 +6,10 @@ using System.Threading.Tasks;
 
 namespace CS.KTS.Entities
 {
-  public enum MoveDirection
+  public class AbilityResponse
   {
-    Stop,
-    Left,
-    Right,
-    Up,
-    Down,
-    CrouchLeft,
-    CrouchRight
+    public bool CouldUse { get; set; }
+
+    public int Power { get; set; }
   }
 }

@@ -6,14 +6,12 @@ using System.Threading.Tasks;
 
 namespace CS.KTS.Entities
 {
-  public enum MoveDirection
+  public class PlayerLevelUpStat
   {
-    Stop,
-    Left,
-    Right,
-    Up,
-    Down,
-    CrouchLeft,
-    CrouchRight
+    public PlayerStats PlayerStat { get; set; }
+
+    public int Points { get; set; }
   }
+
+  
 }

@@ -21,7 +21,7 @@ namespace CS.KTS
 
     public static BoardOne GameBoard { get; set; }
 
-    public static PlayerData PlayerStats { get; set; }
+    public static PlayerData PlayerData { get; set; }
 
     /// <summary>
     /// Constructor for the Application object.

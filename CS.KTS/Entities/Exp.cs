@@ -6,14 +6,10 @@ using System.Threading.Tasks;
 
 namespace CS.KTS.Entities
 {
-  public enum MoveDirection
+  public class Exp
   {
-    Stop,
-    Left,
-    Right,
-    Up,
-    Down,
-    CrouchLeft,
-    CrouchRight
+    public int Max { get; set; }
+
+    public int Current { get; set; }
   }
 }

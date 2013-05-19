@@ -80,16 +80,32 @@
     <Compile Include="Data\Characters\EnemyData.cs" />
     <Compile Include="Data\Characters\PlayerData.cs" />
     <Compile Include="Data\GamePlay\Level.cs" />
+    <Compile Include="Data\Objects\Ability.cs" />
     <Compile Include="Data\Objects\Artifact.cs" />
+    <Compile Include="Data\Objects\LootData.cs" />
+    <Compile Include="Data\Objects\ProjectileData.cs" />
     <Compile Include="Data\Objects\Shield.cs" />
     <Compile Include="Data\Objects\Weapon.cs" />
+    <Compile Include="Entities\AbilityResponse.cs" />
+    <Compile Include="Entities\AbilityType.cs" />
     <Compile Include="Entities\CharacterState.cs" />
+    <Compile Include="Entities\CharacterClass.cs" />
+    <Compile Include="Entities\DpsStats.cs" />
+    <Compile Include="Entities\Exp.cs" />
     <Compile Include="Entities\LevelMode.cs" />
+    <Compile Include="Entities\Loot.cs" />
+    <Compile Include="Entities\LootType.cs" />
     <Compile Include="Entities\Message.cs" />
     <Compile Include="Entities\MoveDirection.cs" />
     <Compile Include="Entities\Movement.cs" />
     <Compile Include="Entities\MovementType.cs" />
+    <Compile Include="Entities\PlayerLevelUpStats.cs" />
+    <Compile Include="Entities\PlayerStats.cs" />
+    <Compile Include="Entities\ProjectileEffect.cs" />
     <Compile Include="Entities\ScreenPosition.cs" />
+    <Compile Include="Entities\WeaponDamage.cs" />
+    <Compile Include="GameLogic\DamageHelper.cs" />
+    <Compile Include="GameLogic\DropHelper.cs" />
     <Compile Include="LocalizedStrings.cs" />
     <Compile Include="GamePage.xaml.cs">
       <DependentUpon>GamePage.xaml</DependentUpon>
@@ -107,12 +123,16 @@
     <Compile Include="Sprites\Button.cs" />
     <Compile Include="Sprites\ImageSprite.cs" />
     <Compile Include="Sprites\InputControlSprite.cs" />
+    <Compile Include="Sprites\LootSprite.cs" />
     <Compile Include="Sprites\Player.cs" />
     <Compile Include="Sprites\Projectile.cs" />
     <Compile Include="Sprites\ScrollingBackgroundSprite.cs" />
     <Compile Include="Sprites\Sprite.cs" />
     <Compile Include="Xaml\CompletedVIew.xaml.cs">
       <DependentUpon>CompletedVIew.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Xaml\CreateNewCharacterView.xaml.cs">
+      <DependentUpon>CreateNewCharacterView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Xaml\DeadView.xaml.cs">
       <DependentUpon>DeadView.xaml</DependentUpon>
@@ -131,6 +151,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Xaml\CompletedVIew.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Xaml\CreateNewCharacterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -161,6 +185,23 @@
     </Content>
     <Content Include="Content\bButton.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Images\GameInterface.png" />
+    <Content Include="Resources\Images\guiBorder.png" />
+    <Content Include="Content\btn.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\btnLeft.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\btnRight.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\btnDisabled.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\btnMenu.xnb">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Content\ButtonLeft.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -213,6 +254,18 @@
     <Content Include="Content\Level1Bg\level1Image3.xnb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\loot.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Hit_Hurt2.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\fire.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\fire2.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">
       <SubType>Designer</SubType>
@@ -251,6 +304,7 @@
   </ItemGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Reference Include="Microsoft.Phone.Controls, Version=8.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="MonoGame.Framework, Version=3.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\MonoGame\v3.0\Assemblies\WindowsPhone\x86\MonoGame.Framework.dll</HintPath>

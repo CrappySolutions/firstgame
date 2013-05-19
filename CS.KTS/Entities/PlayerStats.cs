@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 namespace CS.KTS.Entities
 {
-  public enum MoveDirection
+  public enum PlayerStats
   {
-    Stop,
-    Left,
-    Right,
-    Up,
-    Down,
-    CrouchLeft,
-    CrouchRight
+    Health,
+    Defence,
+    Strength,
+    Accuracy,
+    CriticalChance,
+    Healing
   }
 }

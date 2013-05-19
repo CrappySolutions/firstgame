@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace CS.KTS.Data
 {
-  public class Boss : EnemyData
+  public class Boss 
   {
+
     public List<Artifact> Artifacts { get; set; }
 
     public int MainArtifactId { get; set; }

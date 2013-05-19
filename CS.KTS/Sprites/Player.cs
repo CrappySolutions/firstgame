@@ -1,4 +1,5 @@
-﻿using CS.KTS.Entities;
+﻿using CS.KTS.Data;
+using CS.KTS.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -16,22 +17,20 @@ namespace CS.KTS.Sprites
     private Microsoft.Xna.Framework.Content.ContentManager _contentManager;
     public bool SendProjectile { get; set; }
     private MoveDirection _lastDirection;
-    private Random rand;
     private int _screenWidth;
-    private const int _distanceFromRightEdge = 500;
-    private const int _distanceFromLeftEdge = 50;
-    private bool _isDead;
-
+    private const int _distanceFromRightEdge = 300;
+    private const int _distanceFromLeftEdge = 300;
+    private bool _isCasting;
+    private TimeSpan? _castStart;
     private TimeSpan? _lastProjectileTime;
 
     public Data.PlayerData Data { get; private set; }
 
-    public Player(string skinAsset, string weaponSkinAsset, int rows, int columns, Vector2 startPoint, int screenWidth, Data.PlayerData data)
+    public Player(string skinAsset, string weaponSkinAsset, int rows, int columns, Vector2 startPoint, int screenWidth, PlayerData playerData)
       : base(skinAsset, rows, columns)
     {
-      Data = data;
+      Data = playerData;
       _screenWidth = screenWidth;
-      rand = new Random();
       CurrentMovement = new Movement { Direction = MoveDirection.Stop, Type = MovementType.Walking };
       _lastDirection = CurrentMovement.Direction;
       Position = startPoint;
@@ -93,18 +92,61 @@ namespace CS.KTS.Sprites
       UpdateMovement(CurrentMovement);
       base.Update(gameTime, mSpeed, mDirection);
 
-      if (SendProjectile && CanFire(gameTime))
+      if (SendProjectile && Data.EquipedWeapon.CastTime > 0)
       {
-        SendProjectile = false;
-        var projectile = new Projectile(_contentManager.Load<Texture2D>(_projectileAssetName), 1, 2);
-        projectile.Fire(_firePosition, new Vector2(500, 0), new Vector2(1, 0), GetProjectileDirection());
+        SendProjectileWithCastTime(gameTime);
+      }
+      else if (SendProjectile && CanFire(gameTime) && Data.EquipedWeapon.CastTime == 0)
+      {
+        SendProjectileWithNoCastTime(gameTime);
+      }
+
+
+      foreach (var ability in Data.Abilities)
+      {
+        if (!ability.Send) continue;
+        if (!ability.IsProjectile) continue;
+        var projectile = new Projectile(_contentManager.Load<Texture2D>(ability.TextureName), 1, 2, Data.EquipedWeapon);
+        projectile.Data.Effect = ProjectileEffect.Burn;
+        projectile.Fire(_firePosition, new Vector2(500, 0), new Vector2(1, 0), GetProjectileDirection(), gameTime.TotalGameTime);
         Projectiles.Add(projectile);
-        _lastProjectileTime = gameTime.TotalGameTime;
+        ability.Send = false;
       }
 
       foreach (var projectile in Projectiles)
       {
         projectile.Update(gameTime, CurrentMovement);
+      }
+    }
+
+    private void SendProjectileWithNoCastTime(GameTime gameTime)
+    {
+      _isCasting = true;
+      SendProjectile = false;
+      var projectile = new Projectile(_contentManager.Load<Texture2D>(_projectileAssetName), 1, 2, Data.EquipedWeapon);
+      projectile.Fire(_firePosition, new Vector2(500, 0), new Vector2(1, 0), GetProjectileDirection(), gameTime.TotalGameTime);
+      Projectiles.Add(projectile);
+      _lastProjectileTime = gameTime.TotalGameTime;
+    }
+
+    private void SendProjectileWithCastTime(GameTime gameTime)
+    {
+      if (!Data.IsCasting)
+      {
+        Data.IsCasting = true;
+        _castStart = gameTime.TotalGameTime;
+      }
+
+      Data.TimeToCast = (gameTime.TotalGameTime - _castStart.Value).TotalMilliseconds;
+
+      if ((gameTime.TotalGameTime - _castStart.Value).TotalMilliseconds > Data.EquipedWeapon.CastTime)
+      {
+        SendProjectile = false;
+        var projectile = new Projectile(_contentManager.Load<Texture2D>(_projectileAssetName), 1, 2, Data.EquipedWeapon);
+        projectile.Fire(_firePosition, new Vector2(500, 0), new Vector2(1, 0), GetProjectileDirection(), gameTime.TotalGameTime);
+        Projectiles.Add(projectile);
+        _lastProjectileTime = gameTime.TotalGameTime;
+        Data.IsCasting = false;
       }
     }
 
@@ -119,17 +161,29 @@ namespace CS.KTS.Sprites
       spriteBatch.End();
     }
 
-    public void Hit(int damage)
+    protected override void UpdateMovement(Movement movement)
     {
-      Data.CurrentHP = -damage;
-      if (Data.CurrentHP <= 0) _isDead = true;
-    }
+      if (mCurrentState == CharacterState.Walking)
+      {
+        mSpeed = Vector2.Zero;
+        mDirection = Vector2.Zero;
+        mSpeed.X = Constants.MovementSpeed[movement.Type];
 
-    public bool IsDead { get { return _isDead; } }
+        if (ScreenPosition == ScreenPosition.Left && movement.Direction == MoveDirection.Left)
+        {
+          mSpeed.X = 0;
+        }
 
-    public void UpdateXp(int exp)
-    {
-      Data.CurrentXP += exp;
+        if (ScreenPosition == ScreenPosition.Right && movement.Direction == MoveDirection.Right)
+        {
+          mSpeed.X = 0;
+        }
+
+        if (movement.Direction == MoveDirection.Up || movement.Direction == MoveDirection.Down)
+          mDirection.Y = Constants.DirectionOffsets[movement.Direction];
+        else
+          mDirection.X = Constants.DirectionOffsets[movement.Direction];
+      }
     }
 
     public ScreenPosition ScreenPosition
@@ -140,7 +194,7 @@ namespace CS.KTS.Sprites
         {
           return Entities.ScreenPosition.Right;
         }
-        else if (Position.X <= _distanceFromRightEdge)
+        else if (Position.X <= _distanceFromRightEdge && Position.X <= _screenWidth - _distanceFromRightEdge)
         {
           return Entities.ScreenPosition.Left;
         }
@@ -151,13 +205,6 @@ namespace CS.KTS.Sprites
       }
     }
 
-    public int GetWeaponDamage()
-    {
-      var fact = rand.Next(50, 200);
-      var damage = (_baseDamage * fact / 100);
-      return damage;
-    }
-
     public Movement CurrentMovement { get; set; }
 
     public void SetPlayerDirection(InputControlSprite.ButtonEventArgs e)
@@ -165,16 +212,10 @@ namespace CS.KTS.Sprites
       switch (e.Button)
       {
         case InputControlSprite.ButtonType.Left:
-          if (Vector2.Distance(new Vector2(Position.X, 0), new Vector2(0, 0)) > _distanceFromLeftEdge)
-            CurrentMovement.Direction = MoveDirection.Left;
-          else
-            CurrentMovement.Direction = MoveDirection.Stop;
+          CurrentMovement.Direction = MoveDirection.Left;
           break;
         case InputControlSprite.ButtonType.Right:
-          if (Vector2.Distance(new Vector2(Position.X, 0), new Vector2(_screenWidth, 0)) > _distanceFromRightEdge)
-            CurrentMovement.Direction = MoveDirection.Right;
-          else
-            CurrentMovement.Direction = MoveDirection.Stop;
+          CurrentMovement.Direction = MoveDirection.Right;
           break;
         case InputControlSprite.ButtonType.None:
           if (CurrentMovement != null)
@@ -217,10 +258,11 @@ namespace CS.KTS.Sprites
     private bool CanFire(GameTime gameTime)
     {
       if (!_lastProjectileTime.HasValue) return true;
-      if ((gameTime.TotalGameTime - _lastProjectileTime.Value).Milliseconds > 200) return true;
+      if ((gameTime.TotalGameTime - _lastProjectileTime.Value).Milliseconds > Data.EquipedWeapon.FireRate) return true;
 
       return false;
 
     }
+
   }
 }

@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 namespace CS.KTS.Entities
 {
-  public enum MoveDirection
+  public enum ProjectileEffect
   {
-    Stop,
-    Left,
-    Right,
-    Up,
-    Down,
-    CrouchLeft,
-    CrouchRight
+    Slow,
+    AoeSlow,
+    Heal,
+    Burn,
+    Explode,
+    None
   }
 }

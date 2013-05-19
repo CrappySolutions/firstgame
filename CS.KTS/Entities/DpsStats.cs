@@ -6,14 +6,12 @@ using System.Threading.Tasks;
 
 namespace CS.KTS.Entities
 {
-  public enum MoveDirection
+  public class DpsStats
   {
-    Stop,
-    Left,
-    Right,
-    Up,
-    Down,
-    CrouchLeft,
-    CrouchRight
+    public int Damage { get; set; }
+
+    public TimeSpan TimeStamp { get; set; }
+
+    public bool Remove { get; set; }
   }
 }

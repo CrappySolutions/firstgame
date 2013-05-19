@@ -19,7 +19,7 @@ namespace CS.KTS.Xaml
 
     private void BtnNewGame_Click(object sender, RoutedEventArgs e)
     {
-      NavigationService.Navigate(new Uri("/GamePage.xaml", UriKind.Relative));
+      NavigationService.Navigate(new Uri("/Xaml/CreateNewCharacterView.xaml", UriKind.Relative));
     }
 
     private void BtnLoadGame_Click(object sender, RoutedEventArgs e)

@@ -6,14 +6,11 @@ using System.Threading.Tasks;
 
 namespace CS.KTS.Entities
 {
-  public enum MoveDirection
+  public enum LootType
   {
-    Stop,
-    Left,
-    Right,
-    Up,
-    Down,
-    CrouchLeft,
-    CrouchRight
+    Gold,
+    Weapon,
+    Shiled,
+    None
   }
 }

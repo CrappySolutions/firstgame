@@ -15,9 +15,9 @@ namespace CS.KTS.Sprites
     {
       public static readonly Dictionary<MovementType, int> MovementSpeed = new Dictionary<MovementType, int> 
       { 
-        { MovementType.Walking, 150 }, 
-        { MovementType.Running, 160 }, 
-        { MovementType.Flying, 160 } ,
+        { MovementType.Walking, 120 }, 
+        { MovementType.Running, 120 }, 
+        { MovementType.Flying, 120 } ,
         {MovementType.Crouch, 0}
       };
 
@@ -53,6 +53,8 @@ namespace CS.KTS.Sprites
       AssetName = assetName;
       Rows = rows;
       Columns = columns;
+      this._currentFrameIndex = 0;
+      this._totalFrameCount = Rows * Columns;
     } 
 
     public AnimatedSprite(Texture2D texture, int rows, int columns)
@@ -123,6 +125,7 @@ namespace CS.KTS.Sprites
         mSpeed = Vector2.Zero;
         mDirection = Vector2.Zero;
         mSpeed.X = Constants.MovementSpeed[movement.Type];
+
         if (movement.Direction == MoveDirection.Up || movement.Direction == MoveDirection.Down)
           mDirection.Y = Constants.DirectionOffsets[movement.Direction];
         else

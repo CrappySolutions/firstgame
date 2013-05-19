@@ -6,14 +6,10 @@ using System.Threading.Tasks;
 
 namespace CS.KTS.Entities
 {
-  public enum MoveDirection
+  public enum CharacterClass
   {
-    Stop,
-    Left,
-    Right,
-    Up,
-    Down,
-    CrouchLeft,
-    CrouchRight
+    Wizard,
+    Hunter,
+    Warrior
   }
 }

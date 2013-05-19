@@ -12,17 +12,22 @@ namespace CS.KTS.Entities
 
     public double Number { get; set; }
 
+    public int Number2 { get; set; }
+
     public int X { get; set; }
 
     public int Y { get; set; }
 
     public MessageType MessageType { get; set; }
-    
+
+    public bool IsCritical { get; set; }
   }
 
   public enum MessageType
   { 
     PlayerDamageDone,
+    EnemyDamageDone,
+    PlayerHealing,
     TargetHp,
     PlayerHp,
     PlayerExp,
@@ -30,6 +35,13 @@ namespace CS.KTS.Entities
     PlayerXpPercent,
     PlayerHpPercent,
     InitPlayerMaxHp,
-    InitPlayerMaxXp
+    InitPlayerMaxXp,
+    PlayerHealingCooldown,
+    PlayerDps,
+    PlayerGold,
+    PlayerStun,
+    PlayerStunCooldown,
+    PlayerBeemCooldown,
+    BigMessage
   }
 }

@@ -43,7 +43,7 @@ namespace CS.KTS.Sprites
       base.LoadContent(theContentManager);
     }
 
-    public void Update(GameTime gameTime)
+    public void Update(GameTime gameTime, ScreenPosition playerScreenPosition, MoveDirection playerMoveDirection)
     {
 
       if (mCurrentState == CharacterState.Walking)
@@ -66,7 +66,7 @@ namespace CS.KTS.Sprites
             _currentDirection = MoveDirection.Left;
           }
         }
-        UpdateMovement(movement);
+        UpdateMovement(movement, playerScreenPosition, playerMoveDirection);
         _hpBar.UpdateFrameIndex(Position, Data.MaxHp, Data.CurrentHp);
         _hpBar.Update(gameTime, mSpeed, mDirection);
         base.Update(gameTime, mSpeed, mDirection);
@@ -87,13 +87,34 @@ namespace CS.KTS.Sprites
       }
     }
 
-    protected override void UpdateMovement(Movement movement)
+    private void UpdateMovement(Movement movement, ScreenPosition playerScreenPosition, MoveDirection playerMoveDirection)
     {
       if (mCurrentState == CharacterState.Walking)
       {
         mSpeed = Vector2.Zero;
         mDirection = Vector2.Zero;
-        mSpeed.X = 50;
+        mSpeed.X = Data.Speed;
+
+        if (movement.Direction == MoveDirection.Left && playerScreenPosition == ScreenPosition.Right)
+        {
+          mSpeed.X = Data.Speed + (Data.Speed / 2);
+        }
+
+        if (movement.Direction == MoveDirection.Left && playerScreenPosition == ScreenPosition.Left)
+        {
+          mSpeed.X = Data.Speed / 2;
+        }
+
+        if (movement.Direction == MoveDirection.Right && playerScreenPosition == ScreenPosition.Left)
+        {
+          mSpeed.X = Data.Speed + (Data.Speed / 2);
+        }
+
+        if (movement.Direction == MoveDirection.Right && playerScreenPosition == ScreenPosition.Right)
+        {
+          if (playerMoveDirection == MoveDirection.Right) mSpeed.X = Data.Speed / 2;
+        }
+
         if (movement.Direction == MoveDirection.Up || movement.Direction == MoveDirection.Down)
           mDirection.Y = AnimatedSprite.Constants.DirectionOffsets[movement.Direction];
         else
